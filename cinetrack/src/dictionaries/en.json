@@ -1,0 +1,78 @@
+{
+  "common": {
+    "title": "CineTrack",
+    "description": "Your movie and series tracking platform"
+  },
+  "nav": {
+    "home": "Home",
+    "profile": "Profile",
+    "recommended": "Recommended",
+    "search": "Search"
+  },
+  "sidebar": {
+    "toggle": "Toggle Sidebar",
+    "platform": {
+      "label": "Platform",
+      "settings": "Settings",
+      "designEngineering": "Design Engineering"
+    },
+    "playground": {
+      "label": "Playground",
+      "projects": "Projects"
+    },
+    "models": {
+      "label": "Models",
+      "salesMarketing": "Sales & Marketing",
+      "travel": "Travel"
+    },
+    "myAccount": "My Account"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you're looking for doesn't exist.",
+    "goHome": "Go Home"
+  },
+  "login": {
+    "title": "Welcome back",
+    "description": "Enter your email and password to sign in to your account.",
+    "email": "Email",
+    "emailPlaceholder": "john@example.com",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordDescription": "Must be at least 8 characters",
+    "signIn": "Sign In",
+    "reset": "Reset",
+    "error": "Invalid email or password",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up"
+  },
+  "register": {
+    "title": "Create an account",
+    "description": "Enter your details to create a new account.",
+    "name": "Full Name",
+    "namePlaceholder": "John Doe",
+    "nameRequired": "Name is required",
+    "signUp": "Create Account",
+    "hasAccount": "Already have an account?",
+    "signIn": "Sign In"
+  },
+  "home": {
+    "welcome": "Welcome to CineTrack!",
+    "loggedInMessage": "You are successfully logged in."
+  },
+  "authErrors": {
+    "INVALID_EMAIL_OR_PASSWORD": "Invalid email or password",
+    "INVALID_PASSWORD": "Invalid password",
+    "USER_NOT_FOUND": "User not found",
+    "EMAIL_NOT_VERIFIED": "Please verify your email first",
+    "USER_ALREADY_EXISTS": "This email is already registered",
+    "SESSION_EXPIRED": "Your session has expired. Please sign in again",
+    "TOO_MANY_ATTEMPTS": "Too many attempts. Please try again later",
+    "INTERNAL_SERVER_ERROR": "Internal server error. Please try again later",
+    "UNKNOWN_ERROR": "An unknown error occurred"
+  }
+}

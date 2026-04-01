@@ -94,5 +94,3 @@ Pro ověření funkčnosti aplikace proveďte následující kroky:
 5.  **Ověření doporučení:** Kontrola relevance navrhovaných titulů pro konkrétního uživatele.
 
 ***
-
-Můžu ti s tímto projektem pomoct i dál. Chtěl bys například navrhnout přesné CQL (Cassandra Query Language) dotazy pro vytvoření těchto tabulek, nebo pomoct se strukturou backendu?

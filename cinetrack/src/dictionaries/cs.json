@@ -1,0 +1,78 @@
+{
+  "common": {
+    "title": "CineTrack",
+    "description": "Vaše platforma pro sledování filmů a seriálů"
+  },
+  "nav": {
+    "home": "Domů",
+    "profile": "Profil",
+    "recommended": "Doporučené",
+    "search": "Hledat"
+  },
+  "sidebar": {
+    "toggle": "Přepnout postranní panel",
+    "platform": {
+      "label": "Platforma",
+      "settings": "Nastavení",
+      "designEngineering": "Designové inženýrství"
+    },
+    "playground": {
+      "label": "Hřiště",
+      "projects": "Projekty"
+    },
+    "models": {
+      "label": "Modely",
+      "salesMarketing": "Prodej a marketing",
+      "travel": "Cestování"
+    },
+    "myAccount": "Můj účet"
+  },
+  "notFound": {
+    "title": "Stránka Nenalezena",
+    "description": "Omlouváme se, stránka kterou hledáte neexistuje.",
+    "goHome": "Domů"
+  },
+  "login": {
+    "title": "Vítejte zpět",
+    "description": "Zadejte svůj e-mail a heslo pro přihlášení ke svému účtu.",
+    "email": "E-mail",
+    "emailPlaceholder": "jan.novak@priklad.cz",
+    "emailRequired": "E-mail je povinný",
+    "emailInvalid": "Zadejte platnou e-mailovou adresu",
+    "password": "Heslo",
+    "passwordPlaceholder": "Zadejte heslo",
+    "passwordRequired": "Heslo je povinné",
+    "passwordTooShort": "Heslo musí mít alespoň 8 znaků",
+    "passwordDescription": "Minimálně 8 znaků",
+    "signIn": "Přihlásit se",
+    "reset": "Resetovat",
+    "error": "Neplatný e-mail nebo heslo",
+    "noAccount": "Nemáte účet?",
+    "signUp": "Zaregistrovat se"
+  },
+  "register": {
+    "title": "Vytvořit účet",
+    "description": "Zadejte své údaje pro vytvoření nového účtu.",
+    "name": "Celé jméno",
+    "namePlaceholder": "Jan Novák",
+    "nameRequired": "Jméno je povinné",
+    "signUp": "Vytvořit účet",
+    "hasAccount": "Již máte účet?",
+    "signIn": "Přihlásit se"
+  },
+  "home": {
+    "welcome": "Vítejte v CineTrack!",
+    "loggedInMessage": "Byli jste úspěšně přihlášeni."
+  },
+  "authErrors": {
+    "INVALID_EMAIL_OR_PASSWORD": "Neplatný e-mail nebo heslo",
+    "INVALID_PASSWORD": "Neplatné heslo",
+    "USER_NOT_FOUND": "Uživatel nenalezen",
+    "EMAIL_NOT_VERIFIED": "Nejprve prosím ověřte svůj e-mail",
+    "USER_ALREADY_EXISTS": "Tento e-mail je již zaregistrován",
+    "SESSION_EXPIRED": "Vaše relace vypršela. Přihlaste se prosím znovu",
+    "TOO_MANY_ATTEMPTS": "Příliš mnoho pokusů. Zkuste to prosím později",
+    "INTERNAL_SERVER_ERROR": "Vnitřní chyba serveru. Zkuste to prosím později",
+    "UNKNOWN_ERROR": "Došlo k neznámé chybě"
+  }
+}
