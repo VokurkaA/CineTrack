@@ -1,8 +1,9 @@
 import { getDictionary, Locale } from '@/lib/get-dictionary';
 import { headers } from 'next/headers';
 import { Link } from '@heroui/react';
+import { Suspense } from 'react';
 
-export default async function RootNotFound() {
+async function NotFoundContent() {
   const headersList = await headers();
   const referer = headersList.get('referer');
   const acceptLanguage = headersList.get('accept-language');
@@ -37,5 +38,13 @@ export default async function RootNotFound() {
         <Link.Icon />
       </Link>
     </div>
+  );
+}
+
+export default function RootNotFound() {
+  return (
+    <Suspense>
+      <NotFoundContent />
+    </Suspense>
   );
 }

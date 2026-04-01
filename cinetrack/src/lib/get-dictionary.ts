@@ -1,4 +1,5 @@
 import 'server-only'
+import { cache } from 'react'
 
 const dictionaries = {
   en: () => import('@/dictionaries/en.json').then((module) => module.default),
@@ -86,5 +87,6 @@ export interface Dictionary {
     }
 }
 
-export const getDictionary = async (locale: Locale): Promise<Dictionary> =>
+export const getDictionary = cache(async (locale: Locale): Promise<Dictionary> =>
   dictionaries[locale]?.() ?? dictionaries.en()
+)

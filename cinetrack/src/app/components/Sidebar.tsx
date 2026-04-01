@@ -155,8 +155,8 @@ export const Sidebar = React.forwardRef<
 
     if (isMobile) {
         return (
-            <Drawer isOpen={openMobile} onOpenChange={setOpenMobile}>
-                <Drawer.Backdrop>
+            <Drawer>
+                <Drawer.Backdrop isOpen={openMobile} onOpenChange={setOpenMobile}>
                     <Drawer.Content placement={side}>
                         <Drawer.Dialog className="w-(--sidebar-width) bg-background p-0 text-foreground outline-none">
                             <Drawer.Header className="sr-only">
@@ -222,7 +222,7 @@ Sidebar.displayName = "Sidebar"
 
 export function SidebarTrigger({
     className,
-    onClick,
+    onPress,
     ...props
 }: React.ComponentProps<typeof Button>) {
     const { toggleSidebar } = useSidebar()
@@ -234,8 +234,8 @@ export function SidebarTrigger({
             variant="ghost"
             size="md"
             className={cn("size-8 p-0", className)}
-            onClick={(event) => {
-                onClick?.(event)
+            onPress={(event) => {
+                onPress?.(event)
                 toggleSidebar()
             }}
             {...props}
@@ -664,7 +664,7 @@ export function AppSidebar({ config }: AppSidebarProps) {
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={handleLogout} className="text-danger">
+                        <SidebarMenuButton onPress={handleLogout} className="text-danger">
                             <Icon icon="lucide:log-out" />
                             <span>{lang === 'cs' ? 'Odhlásit se' : 'Logout'}</span>
                         </SidebarMenuButton>
