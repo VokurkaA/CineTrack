@@ -12,7 +12,6 @@ export function Providers({ children, dictionary }: { children: ReactNode; dicti
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
-      forcedTheme="light"
       enableSystem
       disableTransitionOnChange
     >

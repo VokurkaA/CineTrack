@@ -34,7 +34,9 @@ export async function proxy(request: NextRequest) {
     })
 
     if (!session) {
-      return NextResponse.redirect(new URL(`/${locale}/login`, request.url))
+      const url = new URL(`/${locale}/login`, request.url);
+      url.searchParams.set("callbackURL", request.nextUrl.pathname);
+      return NextResponse.redirect(url);
     }
   }
 

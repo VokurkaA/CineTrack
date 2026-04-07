@@ -72,7 +72,7 @@ export default function DynamicBreadcrumbs({
         <HeroBreadcrumbs>
             {crumbs.map(({ label, href }) => (
                 <HeroBreadcrumbs.Item
-                    key={label}
+                    key={href || label}
                     href={href}
                 >
                     {label}
