@@ -11,6 +11,7 @@
   },
   "sidebar": {
     "toggle": "Toggle Sidebar",
+    "navigation": "Main Navigation",
     "platform": {
       "label": "Platform",
       "settings": "Settings",
@@ -25,7 +26,8 @@
       "salesMarketing": "Sales & Marketing",
       "travel": "Travel"
     },
-    "myAccount": "My Account"
+    "myAccount": "My Account",
+    "logout": "Logout"
   },
   "notFound": {
     "title": "Page Not Found",
@@ -34,8 +36,8 @@
   },
   "login": {
     "title": "Welcome back",
-    "description": "Enter your email and password to sign in to your account.",
-    "email": "Email",
+    "description": "Sign into your account.",
+    "email": "Email address",
     "emailPlaceholder": "john@example.com",
     "emailRequired": "Email is required",
     "emailInvalid": "Please enter a valid email address",
@@ -48,7 +50,11 @@
     "reset": "Reset",
     "error": "Invalid email or password",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "or": "or",
+    "continueWith": "Continue with",
+    "hidePassword": "Hide password",
+    "showPassword": "Show password"
   },
   "register": {
     "title": "Create an account",
@@ -56,9 +62,15 @@
     "name": "Full Name",
     "namePlaceholder": "John Doe",
     "nameRequired": "Name is required",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "confirmPasswordRequired": "Confirming password is required",
+    "passwordsDoNotMatch": "Passwords do not match",
     "signUp": "Create Account",
     "hasAccount": "Already have an account?",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "hidePassword": "Hide password",
+    "showPassword": "Show password"
   },
   "home": {
     "welcome": "Welcome to CineTrack!",

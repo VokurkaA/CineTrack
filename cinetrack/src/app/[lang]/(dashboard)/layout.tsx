@@ -1,6 +1,7 @@
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import * as React from "react";
 import { AppSidebar, SidebarTrigger } from "@/app/components/Sidebar";
+import { BanknotesIcon, Cog6ToothIcon, GlobeAsiaAustraliaIcon, PaperAirplaneIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 
 export default async function DashboardLayout({
   children,
@@ -13,35 +14,55 @@ export default async function DashboardLayout({
   const dictionary = await getDictionary(lang);
 
   return (
-    <>
+    <div className="flex min-h-svh bg-background">
       <AppSidebar
         config={[
           {
             groupLabel: dictionary.sidebar.platform.label,
             menuItems: [
-              { icon: "lucide:settings", label: dictionary.sidebar.platform.settings },
-              { icon: "lucide:pencil-ruler", label: dictionary.sidebar.platform.designEngineering },
+              { 
+                icon: <Cog6ToothIcon className="size-4" />, 
+                label: dictionary.sidebar.platform.settings,
+                href: `/${lang}/settings`
+              },
+              { 
+                icon: <PencilSquareIcon className="size-4" />, 
+                label: dictionary.sidebar.platform.designEngineering,
+                href: `/${lang}/design`
+              },
             ],
           },
           {
             groupLabel: dictionary.sidebar.playground.label,
             menuItems: [
-              { icon: "lucide:folder", label: dictionary.sidebar.playground.projects },
+              { 
+                icon: <GlobeAsiaAustraliaIcon className="size-4" />, 
+                label: dictionary.sidebar.playground.projects,
+                href: `/${lang}/projects`
+              },
             ],
           },
           {
             groupLabel: dictionary.sidebar.models.label,
             menuItems: [
-              { icon: "lucide:bar-chart-2", label: dictionary.sidebar.models.salesMarketing },
-              { icon: "lucide:plane", label: dictionary.sidebar.models.travel },
+              { 
+                icon: <BanknotesIcon className="size-4" />, 
+                label: dictionary.sidebar.models.salesMarketing,
+                href: `/${lang}/sales`
+              },
+              { 
+                icon: <PaperAirplaneIcon className="size-4" />, 
+                label: dictionary.sidebar.models.travel,
+                href: `/${lang}/travel`
+              },
             ],
           },
         ]}
       />
-      <main className="w-full">
+      <main className="flex-1 p-4 md:p-8 pt-16 md:pt-8 relative">
         <SidebarTrigger />
         {children}
       </main>
-    </>
+    </div>
   );
 }

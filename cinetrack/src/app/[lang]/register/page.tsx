@@ -6,138 +6,202 @@ import {
   Form,
   TextField,
   Label,
-  Input,
   FieldError,
   Description,
   Card,
   toast,
   Link,
+  InputGroup,
 } from "@heroui/react";
-import { Icon } from "@iconify/react";
 import { useDictionary } from "@/app/components/DictionaryContext";
 import { authClient } from "@/lib/auth-client";
 import { useRouter, useParams } from "next/navigation";
+import { EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
 
 export default function RegisterPage() {
   const dictionary = useDictionary();
-    const router = useRouter();
-    const params = useParams();
-    const lang = params.lang as string;
-  
-    const [loading, setLoading] = useState(false);
-  
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      setLoading(true);
-  
-      const formData = new FormData(e.currentTarget);
-      const data: Record<string, string> = {};
-      formData.forEach((value, key) => {
-        data[key] = value.toString();
-      });
-  
-      const { error: authError } = await authClient.signUp.email({
-        email: data.email,
-        password: data.password,
-        name: data.name,
-      });
-  
-      if (authError) {
-        const errorCode = authError.code || authError.statusText;
-        const errorMessage = dictionary.authErrors[errorCode as keyof typeof dictionary.authErrors] || dictionary.authErrors.UNKNOWN_ERROR;
-  
-        toast(errorMessage, {
-          variant: "danger",
-        });
-        setLoading(false);
-      } else {
-        router.push(`/${lang}/`);
-        router.refresh();
+  const router = useRouter();
+  const params = useParams();
+  const lang = Array.isArray(params.lang) ? params.lang[0] : (params.lang ?? "en");
+
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+
+    const { error: authError } = await authClient.signUp.email({
+      email: data.email,
+      password: data.password,
+      name: data.name,
+    });
+
+    if (authError) {
+      const errorCode = authError.code ?? "UNKNOWN_ERROR";
+
+      if (process.env.NODE_ENV === "development") {
+        console.log("[RegisterPage] auth error:", authError);
       }
-    };
+
+      const errorMessage =
+        dictionary.authErrors[errorCode as keyof typeof dictionary.authErrors] ??
+        dictionary.authErrors.UNKNOWN_ERROR;
+
+      toast(errorMessage, { variant: "danger" });
+      setLoading(false);
+    } else {
+      router.push(`/${lang}/`);
+      router.refresh();
+    }
+  };
+
   return (
-    <main className="min-h-svh w-full flex items-center justify-center bg-background">
-      <Card variant="transparent">
-            <Card.Header>
-              <Card.Title>
-                {dictionary.register.title}
-              </Card.Title>
-              <Card.Description>
-                {dictionary.register.description}
-              </Card.Description>
-            </Card.Header>
-      
-            <Card.Content>
-              <Form className="flex w-96 flex-col gap-4" onSubmit={onSubmit}>
-                <TextField
-                  isRequired
-                  name="name"
-                  type="text"
-                  validate={(value) => {
-                    if (!value) {
-                      return dictionary.register.nameRequired;
-                    }
-                    return null;
-                  }}
-                >
-                  <Label>{dictionary.register.name}</Label>
-                  <Input placeholder={dictionary.register.namePlaceholder} variant="secondary" />
-                  <FieldError />
-                </TextField>
-      
-                <TextField
-                  isRequired
-                  name="email"
-                  type="email"
-                  validate={(value) => {
-                    if (!value) {
-                      return dictionary.login.emailRequired;
-                    }
-                    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-                      return dictionary.login.emailInvalid;
-                    }
-                    return null;
-                  }}
-                >
-                  <Label>{dictionary.login.email}</Label>
-                  <Input placeholder={dictionary.login.emailPlaceholder} variant="secondary" />
-                  <FieldError />
-                </TextField>
-      
-                <TextField
-                  isRequired
-                  name="password"
-                  type="password"
-                  validate={(value) => {
-                    if (!value) {
-                      return dictionary.login.passwordRequired;
-                    }
-                    if (value.length < 8) {
-                      return dictionary.login.passwordTooShort;
-                    }
-                    return null;
-                  }}
-                >
-                  <Label>{dictionary.login.password}</Label>
-                  <Input placeholder={dictionary.login.passwordPlaceholder} variant="secondary" />
-                  <Description>
-                    {dictionary.login.passwordDescription}
-                  </Description>
-                  <FieldError />
-                </TextField>
-      
-                <Button type="submit" variant="primary" isPending={loading} fullWidth>
-                  <Icon icon="lucide:user-plus" />
-                  {dictionary.register.signUp}
-                </Button>
-      
-                <Link href={`/${lang}/login`} className="no-underline space-x-1">
-                  <span>{dictionary.register.hasAccount}</span>
-                  <span className="underline font-bold">{dictionary.register.signIn}</span>
-                </Link>
-              </Form>
-            </Card.Content>
-          </Card>
+    <main className="min-h-svh w-full flex flex-col items-center justify-center bg-background">
+      <Card className="my-auto w-96" variant="transparent">
+        <Card.Header className="text-center mb-4">
+          <Card.Title className="mb-2 text-3xl font-bold">
+            {dictionary.register.title}
+          </Card.Title>
+          <Card.Description>
+            {dictionary.register.description}
+          </Card.Description>
+        </Card.Header>
+
+        <Card.Content>
+          <Form className="flex flex-col gap-4" onSubmit={onSubmit}>
+            <TextField
+              isRequired
+              name="name"
+              type="text"
+              autoComplete="name"
+              validate={(value) => {
+                if (!value) return dictionary.register.nameRequired;
+                return null;
+              }}
+            >
+              <Label>{dictionary.register.name}</Label>
+              <InputGroup>
+                <InputGroup.Prefix>
+                  <UserIcon className="size-4 text-foreground" />
+                </InputGroup.Prefix>
+                <InputGroup.Input placeholder={dictionary.register.namePlaceholder} />
+              </InputGroup>
+              <FieldError />
+            </TextField>
+
+            <TextField
+              isRequired
+              name="email"
+              type="email"
+              inputMode="email"
+              autoComplete="email"
+              validate={(value) => {
+                if (!value) return dictionary.login.emailRequired;
+                if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
+                  return dictionary.login.emailInvalid;
+                return null;
+              }}
+            >
+              <Label>{dictionary.login.email}</Label>
+              <InputGroup>
+                <InputGroup.Prefix>
+                  <EnvelopeIcon className="size-4 text-foreground" />
+                </InputGroup.Prefix>
+                <InputGroup.Input placeholder={dictionary.login.emailPlaceholder} />
+              </InputGroup>
+              <FieldError />
+            </TextField>
+
+            <TextField
+              isRequired
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={setPassword}
+              autoComplete="new-password"
+              validate={(value) => {
+                if (!value) return dictionary.login.passwordRequired;
+                if (value.length < 8) return dictionary.login.passwordTooShort;
+                return null;
+              }}
+            >
+              <Label>{dictionary.login.password}</Label>
+              <InputGroup>
+                <InputGroup.Prefix>
+                  <LockClosedIcon className="size-4 text-foreground" />
+                </InputGroup.Prefix>
+                <InputGroup.Input placeholder={dictionary.login.passwordPlaceholder} />
+                {password &&
+                  <InputGroup.Suffix>
+                    <Button
+                      variant="ghost"
+                      aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
+                      {showPassword
+                        ? <EyeIcon className="size-4 text-foreground" />
+                        : <EyeSlashIcon className="size-4 text-foreground" />}
+                    </Button>
+                  </InputGroup.Suffix>
+                }
+              </InputGroup>
+              <Description>{dictionary.login.passwordDescription}</Description>
+              <FieldError />
+            </TextField>
+
+            <TextField
+              isRequired
+              name="confirmPassword"
+              type={showConfirmPassword ? "text" : "password"}
+              value={confirmPassword}
+              onChange={setConfirmPassword}
+              autoComplete="new-password"
+              validate={(value) => {
+                if (!value) return dictionary.register.confirmPasswordRequired;
+                if (value !== password) return dictionary.register.passwordsDoNotMatch;
+                return null;
+              }}
+            >
+              <Label>{dictionary.register.confirmPassword}</Label>
+              <InputGroup>
+                <InputGroup.Prefix>
+                  <LockClosedIcon className="size-4 text-foreground" />
+                </InputGroup.Prefix>
+                <InputGroup.Input placeholder={dictionary.register.confirmPasswordPlaceholder} />
+                {confirmPassword && (
+                  <InputGroup.Suffix>
+                    <Button
+                      variant="ghost"
+                      aria-label={showConfirmPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
+                    >
+                      {showConfirmPassword
+                        ? <EyeIcon className="size-4 text-foreground" />
+                        : <EyeSlashIcon className="size-4 text-foreground" />}
+                    </Button>
+                  </InputGroup.Suffix>
+                )}
+              </InputGroup>
+              <FieldError />
+            </TextField>
+
+            <Button type="submit" variant="primary" isPending={loading} fullWidth>
+              {dictionary.register.signUp}
+            </Button>
+          </Form>
+        </Card.Content>
+      </Card>
+
+      <Link href={`/${lang}/login`} className="no-underline space-x-1 m-4">
+        <span>{dictionary.register.hasAccount}</span>
+        <span className="underline font-bold">{dictionary.register.signIn}</span>
+      </Link>
     </main>
   );
 }

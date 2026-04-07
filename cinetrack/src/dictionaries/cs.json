@@ -11,6 +11,7 @@
   },
   "sidebar": {
     "toggle": "Přepnout postranní panel",
+    "navigation": "Hlavní navigace",
     "platform": {
       "label": "Platforma",
       "settings": "Nastavení",
@@ -25,7 +26,8 @@
       "salesMarketing": "Prodej a marketing",
       "travel": "Cestování"
     },
-    "myAccount": "Můj účet"
+    "myAccount": "Můj účet",
+    "logout": "Odhlásit se"
   },
   "notFound": {
     "title": "Stránka Nenalezena",
@@ -34,8 +36,8 @@
   },
   "login": {
     "title": "Vítejte zpět",
-    "description": "Zadejte svůj e-mail a heslo pro přihlášení ke svému účtu.",
-    "email": "E-mail",
+    "description": "Přihlaste se ke svému účtu.",
+    "email": "E-mail adresa",
     "emailPlaceholder": "jan.novak@priklad.cz",
     "emailRequired": "E-mail je povinný",
     "emailInvalid": "Zadejte platnou e-mailovou adresu",
@@ -48,7 +50,11 @@
     "reset": "Resetovat",
     "error": "Neplatný e-mail nebo heslo",
     "noAccount": "Nemáte účet?",
-    "signUp": "Zaregistrovat se"
+    "signUp": "Zaregistrovat se",
+    "or": "nebo",
+    "continueWith": "Pokračovat s",
+    "hidePassword": "Skrýt heslo",
+    "showPassword": "Zobrazit heslo"
   },
   "register": {
     "title": "Vytvořit účet",
@@ -56,9 +62,15 @@
     "name": "Celé jméno",
     "namePlaceholder": "Jan Novák",
     "nameRequired": "Jméno je povinné",
+    "confirmPassword": "Potvrdit heslo",
+    "confirmPasswordPlaceholder": "Potvrďte své heslo",
+    "confirmPasswordRequired": "Potvrzení hesla je povinné",
+    "passwordsDoNotMatch": "Hesla se neshodují",
     "signUp": "Vytvořit účet",
     "hasAccount": "Již máte účet?",
-    "signIn": "Přihlásit se"
+    "signIn": "Přihlásit se",
+    "hidePassword": "Skrýt heslo",
+    "showPassword": "Zobrazit heslo"
   },
   "home": {
     "welcome": "Vítejte v CineTrack!",
