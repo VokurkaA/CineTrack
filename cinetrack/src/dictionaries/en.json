@@ -1,13 +1,7 @@
 {
   "common": {
-    "title": "CineTrack",
-    "description": "Your movie and series tracking platform"
-  },
-  "nav": {
-    "home": "Home",
-    "profile": "Profile",
-    "recommended": "Recommended",
-    "search": "Search"
+    "title": "AppName",
+    "description": "The perfect Next.js starter."
   },
   "sidebar": {
     "toggle": "Toggle Sidebar",
@@ -25,6 +19,10 @@
       "label": "Models",
       "salesMarketing": "Sales & Marketing",
       "travel": "Travel"
+    },
+    "action": {
+      "open": "Open",
+      "close": "Close"
     },
     "myAccount": "My Account",
     "logout": "Logout"
@@ -73,7 +71,7 @@
     "showPassword": "Show password"
   },
   "home": {
-    "welcome": "Welcome to CineTrack!",
+    "welcome": "Welcome home!",
     "loggedInMessage": "You are successfully logged in."
   },
   "authErrors": {

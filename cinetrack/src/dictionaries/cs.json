@@ -1,13 +1,7 @@
 {
   "common": {
-    "title": "CineTrack",
-    "description": "Vaše platforma pro sledování filmů a seriálů"
-  },
-  "nav": {
-    "home": "Domů",
-    "profile": "Profil",
-    "recommended": "Doporučené",
-    "search": "Hledat"
+    "title": "Název aplikace",
+    "description": "Perfektní Next.js startovací šablona."
   },
   "sidebar": {
     "toggle": "Přepnout postranní panel",
@@ -25,6 +19,10 @@
       "label": "Modely",
       "salesMarketing": "Prodej a marketing",
       "travel": "Cestování"
+    },
+    "action":{
+      "open": "Otevřít",
+      "close": "Zavřít"
     },
     "myAccount": "Můj účet",
     "logout": "Odhlásit se"
