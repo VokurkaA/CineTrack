@@ -24,8 +24,12 @@
       "open": "Open",
       "close": "Close"
     },
-    "myAccount": "My Account",
-    "logout": "Logout"
+    "account": {
+      "placeholder": "My Account",
+      "title": "Hello,",
+      "user": "User",
+      "signout": "Sign Out"
+    }
   },
   "notFound": {
     "title": "Page Not Found",
@@ -69,6 +73,30 @@
     "signIn": "Sign In",
     "hidePassword": "Hide password",
     "showPassword": "Show password"
+  },
+  "resetPassword": {
+    "title": "Reset your password",
+    "description": "Enter your email to receive password reset instructions.",
+    "email": "Email address",
+    "emailPlaceholder": "john@example.com",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "checkEmail": "Check your email for reset instructions",
+    "submit": "Reset Password"
+  },
+  "setPassword": {
+    "title": "Set new password",
+    "description": "Enter your new password below.",
+    "newPassword": "New password",
+    "newPasswordPlaceholder": "Enter your new password",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "submit": "Set password",
+    "success": "Password updated successfully.",
+    "error": "Something went wrong. Please try again.",
+    "expiredTitle": "Link expired",
+    "expiredDescription": "This password reset link is invalid or has expired.",
+    "requestNewLink": "Request a new link"
   },
   "home": {
     "welcome": "Welcome home!",

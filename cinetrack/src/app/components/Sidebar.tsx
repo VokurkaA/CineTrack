@@ -1,11 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { cn, Button, Link, Drawer, Avatar, Tooltip } from "@heroui/react";
+import { cn, Button, Link, Drawer, Avatar, Tooltip, Modal, ToggleButtonGroup, ToggleButton, Key } from "@heroui/react";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, ChevronUpDownIcon, FilmIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, ChevronUpDownIcon, ComputerDesktopIcon, FilmIcon, MoonIcon, PencilIcon, SunIcon } from "@heroicons/react/24/outline";
 import { useDictionary } from "./DictionaryContext";
 import { authClient } from "@/lib/auth-client";
+import { useTheme } from "next-themes";
 
 const IS_OPEN_STORAGE_KEY = "sidebar:open";
 
@@ -141,30 +142,112 @@ function SidebarContent({ config }: AppSidebarProps) {
                     </div>
                 ))}
             </nav>
-            <Button
-                variant="ghost"
-                onPress={() => { }}
-                className="relative group p-0 text-left flex h-12 w-full items-center justify-start gap-3 rounded-xl hover:bg-surface-secondary px-2"
-            >
-                <Avatar size="sm" className="bg-transparent border border-border">
-                    {session?.user?.image ? (
-                        <Avatar.Image alt={session.user.name || "Avatar"} src={session.user.image} />
-                    ) : (
-                        <Avatar.Fallback className="bg-transparent">
-                            {session?.user?.name?.[0] || "?"}
-                        </Avatar.Fallback>
-                    )}
-                </Avatar>
-                <div className="flex flex-col overflow-hidden">
-                    <span className="text-sm font-semibold truncate">{session?.user?.name || dictionary.sidebar.myAccount}</span>
-                    <span className="text-xs text-muted truncate">{session?.user?.email}</span>
-                </div>
-                <ChevronUpDownIcon className="text-muted size-4 m-0 top-1 right-1 absolute hidden group-hover:block" />
-            </Button>
+            <SidebarAvatarMenu session={session} />
         </div>
     );
 }
 
+function SidebarAvatarMenu({ session }: { session?: ReturnType<typeof authClient.useSession>["data"] }) {
+    type ThemeOption = "system" | "dark" | "light";
+    const dictionary = useDictionary();
+    const { setTheme, theme, forcedTheme } = useTheme();
+    const [selectedTheme, setSelectedTheme] = React.useState<ThemeOption>(
+        forcedTheme ? (forcedTheme as ThemeOption) : (theme as ThemeOption) ?? "system"
+    );
+
+    React.useEffect(() => {
+        if (forcedTheme) {
+            setSelectedTheme(forcedTheme as ThemeOption);
+        } else if (theme) {
+            setSelectedTheme(theme as ThemeOption);
+        }
+    }, [theme, forcedTheme]);
+
+    const handleThemeChange = (keys: Set<Key>) => {
+        const selected = [...keys][0] as ThemeOption;
+        if (!selected) return;
+        setSelectedTheme(selected);
+        setTheme(selected);
+    };
+
+    return (
+        <Modal isOpen>
+            <Modal.Trigger>
+                <Button
+                    variant="ghost"
+                    onPress={() => { }}
+                    className="relative group p-0 text-left flex h-12 w-full items-center justify-start gap-3 rounded-xl hover:bg-surface-secondary px-2"
+                >
+                    <Avatar size="sm" className="bg-transparent border border-border">
+                        {session?.user?.image ? (
+                            <Avatar.Image alt={session.user.name || "Avatar"} src={session.user.image} />
+                        ) : (
+                            <Avatar.Fallback className="bg-transparent">
+                                {session?.user?.name?.[0] || "?"}
+                            </Avatar.Fallback>
+                        )}
+                    </Avatar>
+                    <div className="flex flex-col overflow-hidden">
+                        <span className="text-sm font-semibold truncate">{session?.user?.name || dictionary.sidebar.account.placeholder}</span>
+                        <span className="text-xs text-muted truncate">{session?.user?.email}</span>
+                    </div>
+                    <ChevronUpDownIcon className="text-muted size-4 m-0 top-1 right-1 absolute hidden group-hover:block" />
+                </Button>
+            </Modal.Trigger>
+            <Modal.Backdrop variant="opaque">
+                <Modal.Container>
+                    <Modal.Dialog>
+                        <Modal.CloseTrigger />
+                        <Modal.Header className="select-none">
+                            <Modal.Heading>{dictionary.sidebar.account.placeholder}</Modal.Heading>
+                            <Avatar className="group size-20 mx-auto my-4">
+                                <div className="absolute inset-0 flex items-center justify-center rounded-full bg-background/50 opacity-0 transition-opacity group-hover:opacity-100 group-hover:cursor-pointer">
+                                    <PencilIcon className="text-foreground size-6" />
+                                </div>
+                                {session?.user?.image ? (
+                                    <Avatar.Image className="size-6" alt={session.user.name || "Avatar"} src={session.user.image} />
+                                ) : (
+                                    <Avatar.Fallback className="size-6">
+                                        {session?.user?.name?.[0] || "?"}
+                                    </Avatar.Fallback>
+                                )}
+                            </Avatar>
+                            <p>{dictionary.sidebar.account.title} {session?.user?.name || dictionary.sidebar.account.user}</p>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p>{session?.user.createdAt && session.user.createdAt.toLocaleDateString()}</p>
+                            <p>{session?.user.email}</p>
+                            <ToggleButtonGroup
+                                size="sm"
+                                selectionMode="single"
+                                disallowEmptySelection
+                                selectedKeys={new Set([selectedTheme])}
+                                onSelectionChange={handleThemeChange}
+                                isDisabled={!!forcedTheme}
+                            >
+                                <ToggleButton id="system">
+                                    <ComputerDesktopIcon className="size-4 text-foreground" />
+                                </ToggleButton>
+                                <ToggleButton id="dark">
+                                    <ToggleButtonGroup.Separator />
+                                    <MoonIcon className="size-4 text-foreground" />
+                                </ToggleButton>
+                                <ToggleButton id="light">
+                                    <ToggleButtonGroup.Separator />
+                                    <SunIcon className="size-4 text-foreground" />
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                            <Button variant="danger-soft" className="mt-4" onPress={() => authClient.signOut()} fullWidth>
+                                {dictionary.sidebar.account.signout}
+                            </Button>
+                            <Modal.Footer></Modal.Footer>
+                        </Modal.Body>
+                    </Modal.Dialog>
+                </Modal.Container>
+            </Modal.Backdrop>
+        </Modal>
+    )
+}
 export function AppSidebar({ config }: AppSidebarProps) {
     const { isOpen, setIsOpen, isMobile, hydrated } = useSidebar();
     const dictionary = useDictionary();

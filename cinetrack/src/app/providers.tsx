@@ -13,7 +13,8 @@ export function Providers({ children, dictionary }: { children: ReactNode; dicti
       attribute="class"
       defaultTheme="light"
       enableSystem
-      disableTransitionOnChange
+      // forcedTheme="light"
+      // disableTransitionOnChange
     >
       <DictionaryProvider dictionary={dictionary}>
         <Toast.Provider placement="top start">

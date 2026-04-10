@@ -20,12 +20,16 @@
       "salesMarketing": "Prodej a marketing",
       "travel": "Cestování"
     },
-    "action":{
+    "action": {
       "open": "Otevřít",
       "close": "Zavřít"
     },
-    "myAccount": "Můj účet",
-    "logout": "Odhlásit se"
+    "account": {
+      "placeholder": "Můj účet",
+      "title": "Dobrý den,",
+      "user": "Uživatel",
+      "signout": "Odhlásit se"
+    }
   },
   "notFound": {
     "title": "Stránka Nenalezena",
@@ -69,6 +73,30 @@
     "signIn": "Přihlásit se",
     "hidePassword": "Skrýt heslo",
     "showPassword": "Zobrazit heslo"
+  },
+  "resetPassword":{
+    "title": "Obnovit heslo",
+    "description": "Zadejte svůj e-mail pro obdržení instrukcí k obnovení hesla.",
+    "email": "E-mail adresa",
+    "emailPlaceholder": "jan.novak@priklad.cz",
+    "emailRequired": "E-mail je povinný",
+    "emailInvalid": "Zadejte platnou e-mailovou adresu",
+    "checkEmail": "Zkontrolujte svůj e-mail pro instrukce k obnovení hesla",
+    "submit": "Obnovit Heslo"
+  },
+  "setPassword": {
+    "title": "Nastavit nové heslo",
+    "description": "Zadejte své nové heslo níže.",
+    "newPassword": "Nové heslo",
+    "newPasswordPlaceholder": "Zadejte své nové heslo",
+    "confirmPassword": "Potvrdit heslo",
+    "confirmPasswordPlaceholder": "Potvrďte své nové heslo",
+    "submit": "Nastavit heslo",
+    "success": "Heslo bylo úspěšně aktualizováno.",
+    "error": "Něco se pokazilo. Prosím, zkuste to znovu.",
+    "expiredTitle": "Odkaz vypršel",
+    "expiredDescription": "Tento odkaz pro obnovení hesla je neplatný nebo vypršel.",
+    "requestNewLink": "Vyžádat nový odkaz"
   },
   "home": {
     "welcome": "Vítejte v CineTrack!",

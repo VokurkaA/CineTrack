@@ -2,6 +2,7 @@ import { getDictionary, Locale } from "@/lib/get-dictionary";
 import * as React from "react";
 import { AppSidebar, SidebarTrigger } from "@/app/components/Sidebar";
 import { BanknotesIcon, Cog6ToothIcon, GlobeAsiaAustraliaIcon, PaperAirplaneIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
+import { SessionGuard } from "@/app/components/SessionGuard";
 
 export default async function DashboardLayout({
   children,
@@ -20,13 +21,13 @@ export default async function DashboardLayout({
           {
             groupLabel: dictionary.sidebar.platform.label,
             menuItems: [
-              { 
-                icon: <Cog6ToothIcon className="size-4" />, 
+              {
+                icon: <Cog6ToothIcon className="size-4" />,
                 label: dictionary.sidebar.platform.settings,
                 href: `/${lang}/settings`
               },
-              { 
-                icon: <PencilSquareIcon className="size-4" />, 
+              {
+                icon: <PencilSquareIcon className="size-4" />,
                 label: dictionary.sidebar.platform.designEngineering,
                 href: `/${lang}/design`
               },
@@ -35,8 +36,8 @@ export default async function DashboardLayout({
           {
             groupLabel: dictionary.sidebar.playground.label,
             menuItems: [
-              { 
-                icon: <GlobeAsiaAustraliaIcon className="size-4" />, 
+              {
+                icon: <GlobeAsiaAustraliaIcon className="size-4" />,
                 label: dictionary.sidebar.playground.projects,
                 href: `/${lang}/projects`
               },
@@ -45,13 +46,13 @@ export default async function DashboardLayout({
           {
             groupLabel: dictionary.sidebar.models.label,
             menuItems: [
-              { 
-                icon: <BanknotesIcon className="size-4" />, 
+              {
+                icon: <BanknotesIcon className="size-4" />,
                 label: dictionary.sidebar.models.salesMarketing,
                 href: `/${lang}/sales`
               },
-              { 
-                icon: <PaperAirplaneIcon className="size-4" />, 
+              {
+                icon: <PaperAirplaneIcon className="size-4" />,
                 label: dictionary.sidebar.models.travel,
                 href: `/${lang}/travel`
               },
@@ -61,6 +62,7 @@ export default async function DashboardLayout({
       />
       <main className="flex-1 p-4 md:p-8 pt-16 md:pt-8 relative">
         <SidebarTrigger />
+        <SessionGuard />
         {children}
       </main>
     </div>

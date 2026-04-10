@@ -1,50 +1,46 @@
-import { auth } from "@/lib/auth";
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { getSessionCookie } from "better-auth/cookies";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const locales = ['en', 'cs']
-const defaultLocale = 'en'
+const locales = ["en", "cs"];
+const defaultLocale = "en";
+const publicRoutes = ["login", "register", "reset-password", "set-password"];
 
-export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
-  // 1. Handle Locale Redirection
+  // 1. Locale redirect
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-  )
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+  );
 
   if (!pathnameHasLocale) {
-    const locale = defaultLocale
-    request.nextUrl.pathname = `/${locale}${pathname}`
-    return NextResponse.redirect(request.nextUrl)
+    request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
+    return NextResponse.redirect(request.nextUrl);
   }
 
-  // 2. Auth Guard
-  const locale = pathname.split('/')[1]
-  
-  // Public routes that don't require authentication
-  const isPublicRoute = 
-    pathname === `/${locale}/login` || 
-    pathname === `/${locale}/register` ||
-    pathname.startsWith('/api/auth')
+  // 2. Auth guard
+  const locale = pathname.split("/")[1];
+  const isPublicRoute = publicRoutes.some((route) =>
+    pathname.startsWith(`/${locale}/${route}`),
+  );
 
   if (!isPublicRoute) {
-    const session = await auth.api.getSession({
-      headers: request.headers
-    })
+    const session = getSessionCookie(request);
 
     if (!session) {
       const url = new URL(`/${locale}/login`, request.url);
-      url.searchParams.set("callbackURL", request.nextUrl.pathname);
+      const isRoot = pathname === `/${locale}` || pathname === `/${locale}/`;
+      if (!isRoot) {
+        url.searchParams.set("callbackURL", pathname);
+      }
       return NextResponse.redirect(url);
     }
   }
 
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!_next|api/auth|static|.*\\..*).*)',
-  ],
-}
+  matcher: ["/en/:path*", "/cs/:path*", "/"],
+};
