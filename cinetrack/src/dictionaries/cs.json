@@ -1,7 +1,9 @@
 {
   "common": {
     "title": "Název aplikace",
-    "description": "Perfektní Next.js startovací šablona."
+    "description": "Perfektní Next.js startovací šablona.",
+    "unknownError": "Došlo k neznámé chybě",
+    "ok": "Ok"
   },
   "sidebar": {
     "toggle": "Přepnout postranní panel",
@@ -28,7 +30,10 @@
       "placeholder": "Můj účet",
       "title": "Dobrý den,",
       "user": "Uživatel",
-      "signout": "Odhlásit se"
+      "signout": "Odhlásit se",
+      "removeAvatar": "Odstranit profilovou fotku",
+      "uploadAvatar": "Nahrát z odkazu",
+      "invalidUrl": "Vyplňte prosím platný URL odkaz."
     }
   },
   "notFound": {
@@ -101,16 +106,5 @@
   "home": {
     "welcome": "Vítejte v CineTrack!",
     "loggedInMessage": "Byli jste úspěšně přihlášeni."
-  },
-  "authErrors": {
-    "INVALID_EMAIL_OR_PASSWORD": "Neplatný e-mail nebo heslo",
-    "INVALID_PASSWORD": "Neplatné heslo",
-    "USER_NOT_FOUND": "Uživatel nenalezen",
-    "EMAIL_NOT_VERIFIED": "Nejprve prosím ověřte svůj e-mail",
-    "USER_ALREADY_EXISTS": "Tento e-mail je již zaregistrován",
-    "SESSION_EXPIRED": "Vaše relace vypršela. Přihlaste se prosím znovu",
-    "TOO_MANY_ATTEMPTS": "Příliš mnoho pokusů. Zkuste to prosím později",
-    "INTERNAL_SERVER_ERROR": "Vnitřní chyba serveru. Zkuste to prosím později",
-    "UNKNOWN_ERROR": "Došlo k neznámé chybě"
   }
 }

@@ -15,7 +15,18 @@ export function proxy(request: NextRequest) {
   );
 
   if (!pathnameHasLocale) {
-    request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
+    // Check for cookie or header
+    const cookieLocale = request.cookies.get("better-auth-locale")?.value;
+    const acceptLanguage = request.headers.get("accept-language");
+    const browserLocale = acceptLanguage?.split(",")[0]?.split("-")[0];
+
+    const locale = (cookieLocale && locales.includes(cookieLocale))
+      ? cookieLocale
+      : (browserLocale && locales.includes(browserLocale))
+      ? browserLocale
+      : defaultLocale;
+
+    request.nextUrl.pathname = `/${locale}${pathname}`;
     return NextResponse.redirect(request.nextUrl);
   }
 
@@ -38,9 +49,23 @@ export function proxy(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  // Pass current locale in headers for easier access in Server Components
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-locale", locale);
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+  
+  // Also set on response for potential client-side use
+  response.headers.set("x-locale", locale);
+  return response;
 }
 
 export const config = {
-  matcher: ["/en/:path*", "/cs/:path*", "/"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.png|.*\\.jpg|.*\\.svg|.*\\.webp|.*\\.css).*)",
+  ],
 };

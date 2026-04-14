@@ -1,20 +1,17 @@
 "use client";
-
-import { useRouter, usePathname } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { useEffect } from "react";
 
 export function SessionGuard() {
     const { data: session, isPending } = authClient.useSession();
-    const router = useRouter();
-    const pathname = usePathname();
-    const locale = pathname.split("/")[1];
+    const router = useLocaleRouter();
 
     useEffect(() => {
         if (!isPending && !session) {
-            router.replace(`/${locale}/login?callbackURL=${pathname}`);
+            router.replace("/login");
         }
-    }, [session, isPending, router, locale, pathname]);
+    }, [session, isPending, router]);
 
     return null;
 }

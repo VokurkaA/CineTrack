@@ -24,12 +24,12 @@ export default async function DashboardLayout({
               {
                 icon: <Cog6ToothIcon className="size-4" />,
                 label: dictionary.sidebar.platform.settings,
-                href: `/${lang}/settings`
+                href: '/settings'
               },
               {
                 icon: <PencilSquareIcon className="size-4" />,
                 label: dictionary.sidebar.platform.designEngineering,
-                href: `/${lang}/design`
+                href: '/design'
               },
             ],
           },
@@ -39,7 +39,7 @@ export default async function DashboardLayout({
               {
                 icon: <GlobeAsiaAustraliaIcon className="size-4" />,
                 label: dictionary.sidebar.playground.projects,
-                href: `/${lang}/projects`
+                href: '/projects'
               },
             ],
           },
@@ -49,12 +49,12 @@ export default async function DashboardLayout({
               {
                 icon: <BanknotesIcon className="size-4" />,
                 label: dictionary.sidebar.models.salesMarketing,
-                href: `/${lang}/sales`
+                href: '/sales'
               },
               {
                 icon: <PaperAirplaneIcon className="size-4" />,
                 label: dictionary.sidebar.models.travel,
-                href: `/${lang}/travel`
+                href: '/travel'
               },
             ],
           },

@@ -1,18 +1,17 @@
 "use client";
 
 import { useDictionary } from "@/app/components/DictionaryContext";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
 import { authClient } from "@/lib/auth-client";
 import { LockClosedIcon, EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { TextField, Label, InputGroup, FieldError, Card, Form, Button, toast } from "@heroui/react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function SetPasswordPage() {
     const dictionary = useDictionary();
-    const router = useRouter();
-    const params = useParams();
+    const router = useLocaleRouter();
     const searchParams = useSearchParams();
-    const lang = Array.isArray(params.lang) ? params.lang[0] : (params.lang ?? "en");
 
     const token = searchParams.get("token") ?? undefined;
     const error = searchParams.get("error") ?? undefined;
@@ -25,9 +24,9 @@ export default function SetPasswordPage() {
 
     useEffect(() => {
         if (!token && !error) {
-            router.replace(`/${lang}/reset-password`);
+            router.replace(`/reset-password`);
         }
-    }, [token, error, lang, router]);
+    }, [token, error, router]);
 
     if (error === "INVALID_TOKEN") {
         return (
@@ -45,7 +44,7 @@ export default function SetPasswordPage() {
                         <Button
                             variant="primary"
                             fullWidth
-                            onClick={() => router.push(`/${lang}/reset-password`)}
+                            onClick={() => router.push(`/reset-password`)}
                         >
                             {dictionary.setPassword.requestNewLink}
                         </Button>
@@ -67,11 +66,11 @@ export default function SetPasswordPage() {
         });
 
         if (authError) {
-            toast(dictionary.setPassword.error, { variant: "danger" });
+            toast(authError.message || dictionary.setPassword.error, { variant: "danger" });
             setLoading(false);
         } else {
             toast(dictionary.setPassword.success, { variant: "success" });
-            router.push(`/${lang}/login`);
+            router.push(`/login`);
         }
     };
 

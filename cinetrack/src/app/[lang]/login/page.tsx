@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {
   Button,
   Form,
@@ -9,35 +9,35 @@ import {
   FieldError,
   Card,
   toast,
-  Link,
   InputGroup,
   Separator,
 } from "@heroui/react";
 import { useDictionary } from "@/app/components/DictionaryContext";
 import { authClient } from "@/lib/auth-client";
-import { useRouter, useParams } from "next/navigation";
 import { EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon } from "@heroicons/react/24/outline";
-import { FacebookIcon, GithubIcon, GoogleIcon } from "@/app/components/icons";
+import {FacebookIcon, GithubIcon, GoogleIcon, PasskeyIcon} from "@/app/components/icons";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { LocaleLink } from "@/app/components/LocaleLink";
 
-type SocialProvider = "Google" | "Github" | "Facebook";
+type SocialProvider = "passkey" | "Google" | "Github" | "Facebook";
 
 const SOCIAL_PROVIDERS: { provider: SocialProvider; icon: React.ReactNode }[] = [
+  { provider: "passkey", icon: <PasskeyIcon />},
   { provider: "Google", icon: <GoogleIcon /> },
-  { provider: "Github", icon: <GithubIcon /> },
-  { provider: "Facebook", icon: <FacebookIcon /> },
+  // { provider: "Github", icon: <GithubIcon /> },
+  // { provider: "Facebook", icon: <FacebookIcon /> },
 ];
 
 
 export default function LoginPage() {
   const dictionary = useDictionary();
-  const router = useRouter();
-  const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : (params.lang ?? "en");
+  const router = useLocaleRouter();
 
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<SocialProvider | null>(null);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,32 +51,54 @@ export default function LoginPage() {
     });
 
     if (authError) {
-      const errorCode = authError.code ?? "UNKNOWN_ERROR";
-
       if (process.env.NODE_ENV === "development") {
         console.log("[LoginPage] auth error:", authError);
       }
 
-      const errorMessage =
-        dictionary.authErrors[errorCode as keyof typeof dictionary.authErrors] ??
-        dictionary.authErrors.UNKNOWN_ERROR;
-
       toast(dictionary.login.error, {
         variant: "danger",
-        description: errorMessage,
+        description: authError.message || dictionary.common.unknownError,
       });
       setLoading(false);
     } else {
-      router.push(`/${lang}/`);
+      setLoading(false);
+      router.push(`/`);
       router.refresh();
     }
   };
 
   const onSocialSignIn = async (provider: SocialProvider) => {
     setSocialLoading(provider);
+
+    if (provider === "passkey") {
+      const { error: authError } = await authClient.signIn.passkey({
+        fetchOptions: {
+          onSuccess: () => {
+            router.push(`/`);
+            router.refresh();
+          },
+          onError: (ctx) => {
+            if (ctx.error.message.includes(" ceremony was sent an abort signal") || ctx.error.message.includes("timed out or was not allowed")) {
+              setSocialLoading(null);
+              return;
+            }
+            toast(dictionary.login.error, {
+              variant: "danger",
+              description: ctx.error.message || dictionary.common.unknownError,
+            });
+            setSocialLoading(null);
+          },
+        },
+      });
+      if (authError) {
+        setSocialLoading(null);
+      }
+      return;
+    }
+
     const { error: authError } = await authClient.signIn.social({
       provider: provider.toLowerCase() as "google" | "github" | "facebook",
-      callbackURL: `/${lang}/`,
+      callbackURL: `/`,
     });
 
     if (authError) {
@@ -85,11 +107,19 @@ export default function LoginPage() {
       }
       toast(dictionary.login.error, {
         variant: "danger",
-        description: dictionary.authErrors.UNKNOWN_ERROR,
+        description: authError.message || dictionary.common.unknownError,
       });
     }
     setSocialLoading(null);
   };
+
+  useEffect(() => {
+    authClient.oneTap({
+      fetchOptions: {
+        onSuccess: () => router.push("/"),
+      },
+    });
+  }, [router]);
 
   return (
     <main className="min-h-svh w-full flex flex-col items-center justify-center bg-background">
@@ -110,7 +140,7 @@ export default function LoginPage() {
               name="email"
               type="email"
               inputMode="email"
-              autoComplete="email"
+              autoComplete="email webauthn"
               validate={(value) => {
                 if (!value) return dictionary.login.emailRequired;
                 if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
@@ -123,7 +153,11 @@ export default function LoginPage() {
                 <InputGroup.Prefix>
                   <EnvelopeIcon className="size-4 text-foreground" />
                 </InputGroup.Prefix>
-                <InputGroup.Input placeholder={dictionary.login.emailPlaceholder} />
+                <InputGroup.Input
+                  placeholder={dictionary.login.emailPlaceholder}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </InputGroup>
               <FieldError />
             </TextField>
@@ -134,7 +168,7 @@ export default function LoginPage() {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={setPassword}
-              autoComplete="current-password"
+              autoComplete="current-password webauthn"
               validate={(value) => {
                 if (!value) return dictionary.login.passwordRequired;
                 if (value.length < 8) return dictionary.login.passwordTooShort;
@@ -165,7 +199,13 @@ export default function LoginPage() {
               <FieldError />
             </TextField>
 
-            <Button type="submit" variant="primary" isPending={loading} fullWidth>
+            <Button
+              type="submit"
+              variant="primary"
+              isPending={loading}
+              isDisabled={loading || !password || !email}
+              fullWidth
+            >
               {dictionary.login.signIn}
             </Button>
           </Form>
@@ -192,10 +232,10 @@ export default function LoginPage() {
         </Card.Footer>
       </Card>
 
-      <Link href={`/${lang}/register`} className="no-underline space-x-1 m-4">
+      <LocaleLink href={`/register`} className="no-underline space-x-1 m-4">
         <span className="text-muted">{dictionary.login.noAccount}</span>
         <span className="underline font-bold">{dictionary.login.signUp}</span>
-      </Link>
+      </LocaleLink>
     </main>
   );
 }

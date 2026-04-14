@@ -4,27 +4,28 @@ import { useDictionary } from "@/app/components/DictionaryContext";
 import { authClient } from "@/lib/auth-client";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { TextField, Label, InputGroup, FieldError, Card, Form, Button, toast } from "@heroui/react";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function ResetPasswordPage() {
     const dictionary = useDictionary();
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
-    const params = useParams();
-    const lang = Array.isArray(params.lang) ? params.lang[0] : (params.lang ?? "en");
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setLoading(true);
         const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
 
-        await authClient.requestPasswordReset({
+        const { error: authError } = await authClient.requestPasswordReset({
             email: data.email,
-            redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/${lang}/set-password`,
+            redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/set-password`,
         });
 
-        toast(dictionary.resetPassword.checkEmail, { variant: "success" });
+        if (authError) {
+            toast(authError.message || dictionary.common.unknownError, { variant: "danger" });
+        } else {
+            toast(dictionary.resetPassword.checkEmail, { variant: "success" });
+        }
         setLoading(false);
     };
 

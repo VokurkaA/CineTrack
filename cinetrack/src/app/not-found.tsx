@@ -1,28 +1,11 @@
 import { getDictionary, Locale } from '@/lib/get-dictionary';
 import { headers } from 'next/headers';
-import { Link } from '@heroui/react';
+import { LocaleLink } from '@/app/components/LocaleLink';
 import { Suspense } from 'react';
 
 async function NotFoundContent() {
   const headersList = await headers();
-  const referer = headersList.get('referer');
-  const acceptLanguage = headersList.get('accept-language');
-
-  let lang: Locale = 'en';
-
-  if (referer) {
-    try {
-      const url = new URL(referer);
-      if (url.pathname.startsWith('/cs/') || url.pathname === '/cs') {
-        lang = 'cs';
-      }
-    } catch {
-    }
-  }
-
-  if (lang === 'en' && acceptLanguage?.toLowerCase().includes('cs')) {
-    lang = 'cs';
-  }
+  const lang = (headersList.get('x-locale') || 'en') as Locale;
 
   const dictionary = await getDictionary(lang);
 
@@ -33,10 +16,10 @@ async function NotFoundContent() {
       <p className="text-muted-foreground max-w-md">
         {dictionary.notFound.description}
       </p>
-      <Link href={`/${lang}/`}>
+      <LocaleLink href="/">
         {dictionary.notFound.goHome}
-        <Link.Icon />
-      </Link>
+        <LocaleLink.Icon />
+      </LocaleLink>
     </div>
   );
 }

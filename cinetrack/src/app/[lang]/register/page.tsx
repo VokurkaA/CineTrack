@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {
   Button,
   Form,
@@ -10,19 +10,17 @@ import {
   Description,
   Card,
   toast,
-  Link,
   InputGroup,
 } from "@heroui/react";
 import { useDictionary } from "@/app/components/DictionaryContext";
 import { authClient } from "@/lib/auth-client";
-import { useRouter, useParams } from "next/navigation";
 import { EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon, UserIcon } from "@heroicons/react/24/outline";
+import { useLocaleRouter } from "@/hooks/useLocaleRouter";
+import { LocaleLink } from "@/app/components/LocaleLink";
 
 export default function RegisterPage() {
   const dictionary = useDictionary();
-  const router = useRouter();
-  const params = useParams();
-  const lang = Array.isArray(params.lang) ? params.lang[0] : (params.lang ?? "en");
+  const router = useLocaleRouter();
 
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
@@ -43,23 +41,27 @@ export default function RegisterPage() {
     });
 
     if (authError) {
-      const errorCode = authError.code ?? "UNKNOWN_ERROR";
-
       if (process.env.NODE_ENV === "development") {
         console.log("[RegisterPage] auth error:", authError);
       }
 
-      const errorMessage =
-        dictionary.authErrors[errorCode as keyof typeof dictionary.authErrors] ??
-        dictionary.authErrors.UNKNOWN_ERROR;
-
-      toast(errorMessage, { variant: "danger" });
+      toast(authError.message || dictionary.common.unknownError, { variant: "danger" });
       setLoading(false);
     } else {
-      router.push(`/${lang}/`);
+      setLoading(false);
+      router.push(`/`);
       router.refresh();
     }
   };
+
+  useEffect(() => {
+    authClient.oneTap({
+      fetchOptions: {
+        onSuccess: () => router.push("/dashboard"),
+      },
+    })
+
+  }, [router]);
 
   return (
     <main className="min-h-svh w-full flex flex-col items-center justify-center bg-background">
@@ -198,10 +200,10 @@ export default function RegisterPage() {
         </Card.Content>
       </Card>
 
-      <Link href={`/${lang}/login`} className="no-underline space-x-1 m-4">
+      <LocaleLink href={`/login`} className="no-underline space-x-1 m-4">
         <span>{dictionary.register.hasAccount}</span>
         <span className="underline font-bold">{dictionary.register.signIn}</span>
-      </Link>
+      </LocaleLink>
     </main>
   );
 }
