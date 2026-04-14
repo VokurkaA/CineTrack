@@ -3,7 +3,8 @@
     "title": "Název aplikace",
     "description": "Perfektní Next.js startovací šablona.",
     "unknownError": "Došlo k neznámé chybě",
-    "ok": "Ok"
+    "ok": "Ok",
+    "close": "Zavřít"
   },
   "sidebar": {
     "toggle": "Přepnout postranní panel",
@@ -33,7 +34,13 @@
       "signout": "Odhlásit se",
       "removeAvatar": "Odstranit profilovou fotku",
       "uploadAvatar": "Nahrát z odkazu",
+      "editAvatar": "Upravit profilovou fotku",
       "invalidUrl": "Vyplňte prosím platný URL odkaz."
+    },
+    "theme": {
+      "system": "Systémový motiv",
+      "dark": "Tmavý motiv",
+      "light": "Světlý motiv"
     }
   },
   "notFound": {

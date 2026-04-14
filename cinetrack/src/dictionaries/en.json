@@ -3,7 +3,8 @@
     "title": "AppName",
     "description": "The perfect Next.js starter.",
     "unknownError": "An unknown error occurred",
-    "ok": "Ok"
+    "ok": "Ok",
+    "close": "Close"
   },
   "sidebar": {
     "toggle": "Toggle Sidebar",
@@ -33,7 +34,13 @@
       "signout": "Sign Out",
       "removeAvatar": "Delete profile picture",
       "uploadAvatar": "Upload from url",
+      "editAvatar": "Edit profile picture",
       "invalidUrl": "Please enter a valid URL."
+    },
+    "theme": {
+      "system": "System theme",
+      "dark": "Dark theme",
+      "light": "Light theme"
     }
   },
   "notFound": {

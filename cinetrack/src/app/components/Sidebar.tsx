@@ -127,7 +127,7 @@ function SidebarContent({config}: AppSidebarProps) {
 
     return (<div className="flex flex-col justify-between h-full w-full text-nowrap overflow-x-hidden">
         <nav aria-label={dictionary.sidebar.navigation} className="flex flex-col gap-4 overflow-y-auto">
-            <LocaleLink href="/" className="no-underline flex items-center gap-2 p-2">
+            <LocaleLink href="/" aria-label={dictionary.common.title} className="no-underline flex items-center gap-2 p-2">
                 <FilmIcon className="size-8 text-primary"/>
                 <span
                     className="text-2xl font-black text-foreground tracking-tight">{dictionary.common.title}</span>
@@ -140,6 +140,7 @@ function SidebarContent({config}: AppSidebarProps) {
                 {group.menuItems.map((item) => (<LocaleLink
                     key={item.href}
                     href={item.href}
+                    aria-label={item.label}
                     className={cn("flex items-center gap-3 px-2 py-2 rounded-xl no-underline text-sm w-full", cleanPathname === item.href ? "bg-primary/10 text-primary font-medium" : "text-foreground hover:bg-surface-secondary")}
                 >
                     {item.icon}
@@ -199,8 +200,8 @@ function SidebarAvatarMenu({session}: { session?: ReturnType<typeof authClient.u
         </Modal.Trigger>
         <Modal.Backdrop variant="opaque">
             <Modal.Container placement="top">
-                <Modal.Dialog>
-                    <Modal.CloseTrigger/>
+                <Modal.Dialog aria-label={dictionary.sidebar.account.placeholder}>
+                    <Modal.CloseTrigger aria-label={dictionary.common.close}/>
                     <Modal.Header className="select-none">
                         <Modal.Heading>{dictionary.sidebar.account.placeholder}</Modal.Heading>
                         <AvatarSidebarAvatar session={session}/>
@@ -219,15 +220,16 @@ function SidebarAvatarMenu({session}: { session?: ReturnType<typeof authClient.u
                             selectedKeys={new Set([selectedTheme])}
                             onSelectionChange={handleThemeChange}
                             isDisabled={!!forcedTheme}
+                            aria-label={dictionary.sidebar.account.placeholder}
                         >
-                            <ToggleButton id="system">
+                            <ToggleButton id="system" aria-label={dictionary.sidebar.theme.system}>
                                 <ComputerDesktopIcon className="size-4 text-foreground"/>
                             </ToggleButton>
-                            <ToggleButton id="dark">
+                            <ToggleButton id="dark" aria-label={dictionary.sidebar.theme.dark}>
                                 <ToggleButtonGroup.Separator/>
                                 <MoonIcon className="size-4 text-foreground"/>
                             </ToggleButton>
-                            <ToggleButton id="light">
+                            <ToggleButton id="light" aria-label={dictionary.sidebar.theme.light}>
                                 <ToggleButtonGroup.Separator/>
                                 <SunIcon className="size-4 text-foreground"/>
                             </ToggleButton>
@@ -272,17 +274,21 @@ const AvatarSidebarAvatar = ({session}: { session?: ReturnType<typeof authClient
                         isIconOnly
                         className="absolute z-50 inset-0 h-full w-full scale-110 flex items-center justify-center rounded-full bg-background/50 opacity-0 transition-opacity
                                         group-hover:opacity-100 group-hover:cursor-pointer"
+                        aria-label={dictionary.sidebar.account.editAvatar}
                 >
                     <PencilIcon className="text-foreground size-6"/>
                 </Button>
             </Popover.Trigger>
             <Popover.Content>
-                <Popover.Dialog>
-                    <ListBox onAction={(key) => {
-                        setIsPopoverOpen(false);
-                        if (key === 'remove') authClient.updateUser({image: ''});
-                        if (key === 'upload') setIsModalOpen(true);
-                    }}>
+                <Popover.Dialog aria-label={dictionary.sidebar.account.editAvatar}>
+                    <ListBox 
+                        aria-label={dictionary.sidebar.account.editAvatar}
+                        onAction={(key) => {
+                            setIsPopoverOpen(false);
+                            if (key === 'remove') authClient.updateUser({image: ''});
+                            if (key === 'upload') setIsModalOpen(true);
+                        }}
+                    >
                         <ListBox.Item id="remove" textValue={dictionary.sidebar.account.removeAvatar}>
                             <Label>{dictionary.sidebar.account.removeAvatar}</Label>
                             <ListBox.ItemIndicator/>
@@ -299,8 +305,8 @@ const AvatarSidebarAvatar = ({session}: { session?: ReturnType<typeof authClient
         <Modal>
             <Modal.Backdrop variant='blur' isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
                 <Modal.Container>
-                    <Modal.Dialog>
-                        <Modal.CloseTrigger/>
+                    <Modal.Dialog aria-label={dictionary.sidebar.account.uploadAvatar}>
+                        <Modal.CloseTrigger aria-label={dictionary.common.close}/>
                         <Modal.Header className='my-4'>
                             <Modal.Heading>{dictionary.sidebar.account.uploadAvatar}</Modal.Heading>
                         </Modal.Header>
@@ -318,6 +324,7 @@ const AvatarSidebarAvatar = ({session}: { session?: ReturnType<typeof authClient
                                         return true;
                                     }}
                                 >
+                                    <Label>{dictionary.sidebar.account.uploadAvatar}</Label>
                                     <Input variant='secondary' placeholder="https://..." type="url"/>
                                     <FieldError/>
                                 </TextField>

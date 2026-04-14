@@ -111,6 +111,7 @@ export default function SetPasswordPage() {
                                         <Button
                                             type="button"
                                             variant="ghost"
+                                            aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
                                             onClick={() => setShowPassword((p) => !p)}
                                         >
                                             {showPassword
@@ -147,6 +148,7 @@ export default function SetPasswordPage() {
                                         <Button
                                             type="button"
                                             variant="ghost"
+                                            aria-label={showConfirmPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
                                             onClick={() => setShowConfirmPassword((p) => !p)}
                                         >
                                             {showConfirmPassword
