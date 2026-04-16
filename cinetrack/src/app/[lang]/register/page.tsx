@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {Button, Card, Description, FieldError, Form, InputGroup, Label, TextField, toast,} from "@heroui/react";
 import {useDictionary} from "@/app/components/DictionaryContext";
 import {authClient} from "@/lib/auth-client";
@@ -11,7 +11,8 @@ import {LocaleLink} from "@/app/components/LocaleLink";
 export default function RegisterPage() {
     const dictionary = useDictionary();
     const router = useLocaleRouter();
-
+    const oneTapInitialized = useRef(false);
+    
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -43,6 +44,9 @@ export default function RegisterPage() {
     };
 
     useEffect(() => {
+        if (oneTapInitialized.current) return;
+        oneTapInitialized.current = true;
+
         authClient.oneTap({
             fetchOptions: {
                 onSuccess: async () => {
@@ -52,6 +56,7 @@ export default function RegisterPage() {
                     router.refresh();
                 }, onError: (ctx) => {
                     console.error("[OneTap Error]", ctx.error);
+                    oneTapInitialized.current = false;
                 }
             },
         });
@@ -135,7 +140,7 @@ export default function RegisterPage() {
                                 <Button
                                     variant="ghost"
                                     aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
-                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    onPress={() => setShowPassword((prev) => !prev)}
                                 >
                                     {showPassword ? <EyeIcon className="size-4 text-foreground"/> :
                                         <EyeSlashIcon className="size-4 text-foreground"/>}
@@ -169,7 +174,7 @@ export default function RegisterPage() {
                                 <Button
                                     variant="ghost"
                                     aria-label={showConfirmPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
-                                    onClick={() => setShowConfirmPassword((prev) => !prev)}
+                                    onPress={() => setShowConfirmPassword((prev) => !prev)}
                                 >
                                     {showConfirmPassword ? <EyeIcon className="size-4 text-foreground"/> :
                                         <EyeSlashIcon className="size-4 text-foreground"/>}

@@ -1,8 +1,9 @@
 import { getDictionary, Locale } from "@/lib/get-dictionary";
 import * as React from "react";
-import { AppSidebar, SidebarTrigger } from "@/app/components/Sidebar";
+import { AppSidebar } from "@/app/components/sidebar/Sidebar";
 import { BanknotesIcon, Cog6ToothIcon, GlobeAsiaAustraliaIcon, PaperAirplaneIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { SessionGuard } from "@/app/components/SessionGuard";
+import { SidebarTrigger } from "@/app/components/sidebar/Trigger";
 
 export default async function DashboardLayout({
   children,

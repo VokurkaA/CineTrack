@@ -27,15 +27,53 @@
       "open": "Otevřít",
       "close": "Zavřít"
     },
-    "account": {
-      "placeholder": "Můj účet",
-      "title": "Dobrý den,",
-      "user": "Uživatel",
-      "signout": "Odhlásit se",
-      "removeAvatar": "Odstranit profilovou fotku",
-      "uploadAvatar": "Nahrát z odkazu",
-      "editAvatar": "Upravit profilovou fotku",
-      "invalidUrl": "Vyplňte prosím platný URL odkaz."
+    "settings": {
+      "common": {
+        "placeholder": "Můj účet",
+        "user": "Uživatel",
+        "signOut": "Odhlásit se"
+      },
+      "general": {
+        "title": "Obecné",
+        "removeAvatar": "Odstranit profilovou fotku",
+        "uploadAvatar": "Nahrát z odkazu",
+        "editAvatar": "Upravit profilovou fotku",
+        "invalidUrl": "Vložte platný odkaz.",
+        "avatarUrl": "URL avataru",
+        "avatarUrlPlaceholder": "https://priklad.cz/avatar.jpg",
+        "saveAvatar": "Uložit avatar"
+      },
+      "connections": {
+        "title": "Propojení",
+        "linkTo": "Propojit účet s",
+        "twoFactor": {
+          "enable": "Zapnout 2FA",
+          "disable": "Vypnout 2FA",
+          "regenerate": "Znovu vygenerovat záložní kódy",
+          "verificationSent": "Ověření e-mailu odesláno na {email}",
+          "verificationDisabled": "Ověření e-mailu vypnuto",
+          "modalTitle": "Ověřte svou totožnost",
+          "modalLabel": "Zadejte své heslo",
+          "modalPlaceholder": "Zadejte své heslo",
+          "drawerTitle": "Dvoufázové ověření",
+          "scanQr": {
+            "label": "Naskenujte QR kód svou autentizační aplikací",
+            "link": "Nebo použijte tento odkaz"
+          },
+          "verify": {
+            "back": "Zpět",
+            "next": "Další"
+          },
+          "backup": {
+            "label": "Uložte si tyto záložní kódy na bezpečné místo – znovu je neuvidíte",
+            "done": "Hotovo"
+          },
+          "toast": {
+            "disabled": "Dvoufázové ověření vypnuto",
+            "unknownMethod": "Neznámý způsob přihlášení"
+          }
+        }
+      }
     },
     "theme": {
       "system": "Systémový motiv",
@@ -86,7 +124,7 @@
     "hidePassword": "Skrýt heslo",
     "showPassword": "Zobrazit heslo"
   },
-  "resetPassword":{
+  "resetPassword": {
     "title": "Obnovit heslo",
     "description": "Zadejte svůj e-mail pro obdržení instrukcí k obnovení hesla.",
     "email": "E-mail adresa",

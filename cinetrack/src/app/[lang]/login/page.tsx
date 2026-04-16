@@ -130,6 +130,7 @@ export default function LoginPage() {
                         type="email"
                         inputMode="email"
                         autoComplete="email webauthn"
+                        onChange={setEmail}
                         validate={(value) => {
                             if (!value) return dictionary.login.emailRequired;
                             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) return dictionary.login.emailInvalid;
@@ -144,7 +145,6 @@ export default function LoginPage() {
                             <InputGroup.Input
                                 placeholder={dictionary.login.emailPlaceholder}
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </InputGroup>
                         <FieldError/>
@@ -168,13 +168,16 @@ export default function LoginPage() {
                             <InputGroup.Prefix>
                                 <LockClosedIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder={dictionary.login.passwordPlaceholder}/>
+                            <InputGroup.Input
+                                placeholder={dictionary.login.passwordPlaceholder}
+                                value={password}
+                            />
                             {password && (<InputGroup.Suffix>
                                 <Button
                                     type="button"
                                     variant="ghost"
                                     aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
-                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    onPress={() => setShowPassword((prev) => !prev)}
                                 >
                                     {showPassword ? <EyeIcon className="size-4 text-foreground"/> :
                                         <EyeSlashIcon className="size-4 text-foreground"/>}
@@ -209,7 +212,7 @@ export default function LoginPage() {
                         icon={icon}
                         isPending={socialLoading === provider}
                         isDisabled={socialLoading !== null}
-                        onClick={() => onSocialSignIn(provider)}
+                        onPress={() => onSocialSignIn(provider)}
                     />))}
                 </div>
             </Card.Footer>
@@ -228,10 +231,10 @@ interface ContinueWithButtonProps {
     icon: React.ReactNode;
     isPending: boolean;
     isDisabled: boolean;
-    onClick: () => void;
+    onPress: () => void;
 }
 
-const ContinueWithButton = ({provider, icon, isPending, isDisabled, onClick}: ContinueWithButtonProps) => {
+const ContinueWithButton = ({provider, icon, isPending, isDisabled, onPress}: ContinueWithButtonProps) => {
     const dictionary = useDictionary();
 
     return (<Button
@@ -240,7 +243,7 @@ const ContinueWithButton = ({provider, icon, isPending, isDisabled, onClick}: Co
         className="w-full"
         isPending={isPending}
         isDisabled={isDisabled}
-        onClick={onClick}
+        onPress={onPress}
         aria-label={`${dictionary.login.continueWith} ${provider}`}
     >
         {icon}

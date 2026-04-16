@@ -3,9 +3,9 @@
 import { ThemeProvider } from "next-themes";
 import { Toast } from "@heroui/react";
 import { ReactNode } from "react";
-import { SidebarProvider } from "./components/Sidebar";
 import { DictionaryProvider } from "./components/DictionaryContext";
 import { Dictionary } from "@/lib/get-dictionary";
+import { SidebarProvider } from "./components/sidebar/SidebarProvider";
 
 export function Providers({ children, dictionary }: { children: ReactNode; dictionary: Dictionary }) {
   return (

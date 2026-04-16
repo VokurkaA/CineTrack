@@ -27,15 +27,53 @@
       "open": "Open",
       "close": "Close"
     },
-    "account": {
-      "placeholder": "My Account",
-      "title": "Hello,",
-      "user": "User",
-      "signout": "Sign Out",
-      "removeAvatar": "Delete profile picture",
-      "uploadAvatar": "Upload from url",
-      "editAvatar": "Edit profile picture",
-      "invalidUrl": "Please enter a valid URL."
+    "settings": {
+      "common": {
+        "placeholder": "My Account",
+        "user": "User",
+        "signOut": "Sign Out"
+      },
+      "general": {
+        "title": "General",
+        "removeAvatar": "Delete profile picture",
+        "uploadAvatar": "Upload from url",
+        "editAvatar": "Edit profile picture",
+        "invalidUrl": "Please enter a valid URL.",
+        "avatarUrl": "Avatar URL",
+        "avatarUrlPlaceholder": "https://example.com/avatar.jpg",
+        "saveAvatar": "Save Avatar"
+      },
+      "connections": {
+        "title": "Connections",
+        "linkTo": "Link account with",
+        "twoFactor": {
+          "enable": "Enable 2FA",
+          "disable": "Disable 2FA",
+          "regenerate": "Regenerate backup codes",
+          "verificationSent": "Email verification sent to {email}",
+          "verificationDisabled": "Email verification disabled",
+          "modalTitle": "Verify your identity",
+          "modalLabel": "Enter your password",
+          "modalPlaceholder": "Enter your password",
+          "drawerTitle": "Two-Factor Authentication",
+          "scanQr": {
+            "label": "Scan the QR code with your authenticator app",
+            "link": "Or use this link"
+          },
+          "verify": {
+            "back": "Back",
+            "next": "Next"
+          },
+          "backup": {
+            "label": "Save these backup codes somewhere safe — you won't see them again",
+            "done": "Done"
+          },
+          "toast": {
+            "disabled": "Two-factor authentication disabled",
+            "unknownMethod": "Unknown login method"
+          }
+        }
+      }
     },
     "theme": {
       "system": "System theme",

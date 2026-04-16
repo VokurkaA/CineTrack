@@ -44,7 +44,7 @@ export default function SetPasswordPage() {
                         <Button
                             variant="primary"
                             fullWidth
-                            onClick={() => router.push(`/reset-password`)}
+                            onPress={() => router.push(`/reset-password`)}
                         >
                             {dictionary.setPassword.requestNewLink}
                         </Button>
@@ -112,7 +112,7 @@ export default function SetPasswordPage() {
                                             type="button"
                                             variant="ghost"
                                             aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
-                                            onClick={() => setShowPassword((p) => !p)}
+                                            onPress={() => setShowPassword((p) => !p)}
                                         >
                                             {showPassword
                                                 ? <EyeIcon className="size-4 text-foreground" />
@@ -149,7 +149,7 @@ export default function SetPasswordPage() {
                                             type="button"
                                             variant="ghost"
                                             aria-label={showConfirmPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
-                                            onClick={() => setShowConfirmPassword((p) => !p)}
+                                            onPress={() => setShowConfirmPassword((p) => !p)}
                                         >
                                             {showConfirmPassword
                                                 ? <EyeIcon className="size-4 text-foreground" />
