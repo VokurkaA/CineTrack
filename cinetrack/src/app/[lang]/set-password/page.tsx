@@ -95,23 +95,23 @@ export default function SetPasswordPage() {
                             onChange={setPassword}
                             autoComplete="new-password"
                             validate={(value) => {
-                                if (!value) return dictionary.login.passwordRequired;
-                                if (value.length < 8) return dictionary.login.passwordTooShort;
+                                if (!value) return dictionary.auth.passwordRequired;
+                                if (value.length < 8) return dictionary.auth.passwordTooShort;
                                 return null;
                             }}
                         >
-                            <Label>{dictionary.setPassword.newPassword}</Label>
+                            <Label>{dictionary.auth.password}</Label>
                             <InputGroup>
                                 <InputGroup.Prefix>
                                     <LockClosedIcon className="size-4 text-foreground" />
                                 </InputGroup.Prefix>
-                                <InputGroup.Input placeholder={dictionary.setPassword.newPasswordPlaceholder} />
+                                <InputGroup.Input placeholder={dictionary.auth.passwordPlaceholder} />
                                 {password && (
                                     <InputGroup.Suffix>
                                         <Button
                                             type="button"
                                             variant="ghost"
-                                            aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                                            aria-label={showPassword ? dictionary.auth.hidePassword : dictionary.auth.showPassword}
                                             onPress={() => setShowPassword((p) => !p)}
                                         >
                                             {showPassword
@@ -132,23 +132,23 @@ export default function SetPasswordPage() {
                             onChange={setConfirmPassword}
                             autoComplete="new-password"
                             validate={(value) => {
-                                if (!value) return dictionary.register.confirmPasswordRequired;
-                                if (value !== password) return dictionary.register.passwordsDoNotMatch;
+                                if (!value) return dictionary.auth.confirmPasswordRequired;
+                                if (value !== password) return dictionary.auth.passwordsDoNotMatch;
                                 return null;
                             }}
                         >
-                            <Label>{dictionary.setPassword.confirmPassword}</Label>
+                            <Label>{dictionary.auth.confirmPassword}</Label>
                             <InputGroup>
                                 <InputGroup.Prefix>
                                     <LockClosedIcon className="size-4 text-foreground" />
                                 </InputGroup.Prefix>
-                                <InputGroup.Input placeholder={dictionary.setPassword.confirmPasswordPlaceholder} />
+                                <InputGroup.Input placeholder={dictionary.auth.confirmPasswordPlaceholder} />
                                 {confirmPassword && (
                                     <InputGroup.Suffix>
                                         <Button
                                             type="button"
                                             variant="ghost"
-                                            aria-label={showConfirmPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                                            aria-label={showConfirmPassword ? dictionary.auth.hidePassword : dictionary.auth.showPassword}
                                             onPress={() => setShowConfirmPassword((p) => !p)}
                                         >
                                             {showConfirmPassword
@@ -168,7 +168,7 @@ export default function SetPasswordPage() {
                             isDisabled={!password || !confirmPassword || password !== confirmPassword}
                             fullWidth
                         >
-                            {dictionary.setPassword.submit}
+                            {dictionary.auth.submit}
                         </Button>
                     </Form>
                 </Card.Content>

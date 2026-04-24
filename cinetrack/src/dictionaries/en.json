@@ -1,10 +1,40 @@
 {
   "common": {
-    "title": "AppName",
+    "title": "CineTrack",
     "description": "The perfect Next.js starter.",
     "unknownError": "An unknown error occurred",
     "ok": "Ok",
-    "close": "Close"
+    "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
+    "remove": "Remove",
+    "add": "Add",
+    "rename": "Rename",
+    "confirm": "Confirm",
+    "deleteConfirm": "Remove"
+  },
+  "auth": {
+    "name": "Full Name",
+    "namePlaceholder": "John Doe",
+    "nameRequired": "Name is required",
+    "email": "Email address",
+    "emailPlaceholder": "john@example.com",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRequired": "Password is required",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordDescription": "Must be at least 8 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "confirmPasswordRequired": "Confirming password is required",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "submit": "Submit"
   },
   "sidebar": {
     "toggle": "Toggle Sidebar",
@@ -36,7 +66,7 @@
       "general": {
         "title": "General",
         "removeAvatar": "Delete profile picture",
-        "uploadAvatar": "Upload from url",
+        "uploadAvatar": "Upload from URL",
         "editAvatar": "Edit profile picture",
         "invalidUrl": "Please enter a valid URL.",
         "avatarUrl": "Avatar URL",
@@ -47,9 +77,18 @@
         "title": "Connections",
         "linkTo": "Link account with",
         "twoFactor": {
+          "title": "Two-Factor Authentication",
           "enable": "Enable 2FA",
           "disable": "Disable 2FA",
-          "regenerate": "Regenerate backup codes",
+          "statusEnabled": "Two Factor Enabled",
+          "statusDisabled": "Two Factor Disabled",
+          "description": "Enable or disable 2FA for your account",
+          "regenerate": "Regenerate codes",
+          "regenerateDescription": "Lost authentication codes? Regenerate them.",
+          "disableConfirmTitle": "Disable Two-Factor Authentication?",
+          "disableConfirmDescription": "This will make your account less secure. You will no longer be required to enter a code when signing in.",
+          "regenerateConfirmTitle": "Regenerate Backup Codes?",
+          "regenerateConfirmDescription": "This will invalidate your existing backup codes. Make sure to save the new ones in a safe place.",
           "verificationSent": "Email verification sent to {email}",
           "verificationDisabled": "Email verification disabled",
           "modalTitle": "Verify your identity",
@@ -72,6 +111,23 @@
             "disabled": "Two-factor authentication disabled",
             "unknownMethod": "Unknown login method"
           }
+        },
+        "passkey": {
+          "title": "Passkeys",
+          "columnName": "Name",
+          "columnProvider": "Provider",
+          "columnDeviceType": "Device",
+          "columnAdded": "Added",
+          "columnActions": "Actions",
+          "emptyState": "No passkeys registered. Add one for faster, passwordless sign-in.",
+          "addTitle": "Add a new passkey",
+          "addLabel": "Passkey name",
+          "addPlaceholder": "e.g. MacBook Touch ID",
+          "renameTitle": "Rename passkey",
+          "renameLabel": "New name",
+          "deleteTitle": "Remove this passkey?",
+          "deleteDescription": "You will no longer be able to sign in using this passkey.",
+          "deleteLastWarning": "This is your only passkey. Removing it means you must use your password to sign in."
         }
       }
     },
@@ -89,67 +145,44 @@
   "login": {
     "title": "Welcome back",
     "description": "Sign into your account.",
-    "email": "Email address",
-    "emailPlaceholder": "john@example.com",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Please enter a valid email address",
-    "password": "Password",
-    "passwordPlaceholder": "Enter your password",
-    "passwordRequired": "Password is required",
-    "passwordTooShort": "Password must be at least 8 characters",
-    "passwordDescription": "Must be at least 8 characters",
-    "signIn": "Sign In",
     "reset": "Reset",
     "error": "Invalid email or password",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign Up",
     "or": "or",
-    "continueWith": "Continue with",
-    "hidePassword": "Hide password",
-    "showPassword": "Show password"
+    "continueWith": "Continue with"
   },
   "register": {
     "title": "Create an account",
     "description": "Enter your details to create a new account.",
-    "name": "Full Name",
-    "namePlaceholder": "John Doe",
-    "nameRequired": "Name is required",
-    "confirmPassword": "Confirm Password",
-    "confirmPasswordPlaceholder": "Confirm your password",
-    "confirmPasswordRequired": "Confirming password is required",
-    "passwordsDoNotMatch": "Passwords do not match",
-    "signUp": "Create Account",
-    "hasAccount": "Already have an account?",
-    "signIn": "Sign In",
-    "hidePassword": "Hide password",
-    "showPassword": "Show password"
+    "hasAccount": "Already have an account?"
   },
   "resetPassword": {
     "title": "Reset your password",
     "description": "Enter your email to receive password reset instructions.",
-    "email": "Email address",
-    "emailPlaceholder": "john@example.com",
-    "emailRequired": "Email is required",
-    "emailInvalid": "Please enter a valid email address",
-    "checkEmail": "Check your email for reset instructions",
-    "submit": "Reset Password"
+    "checkEmail": "Check your email for reset instructions"
   },
   "setPassword": {
     "title": "Set new password",
     "description": "Enter your new password below.",
-    "newPassword": "New password",
-    "newPasswordPlaceholder": "Enter your new password",
-    "confirmPassword": "Confirm password",
-    "confirmPasswordPlaceholder": "Confirm your new password",
-    "submit": "Set password",
     "success": "Password updated successfully.",
     "error": "Something went wrong. Please try again.",
     "expiredTitle": "Link expired",
     "expiredDescription": "This password reset link is invalid or has expired.",
     "requestNewLink": "Request a new link"
   },
+  "twoFactorLogin": {
+    "title": "Two-Factor Authentication",
+    "description": "Please enter the verification code from your authenticator app or a backup code.",
+    "totpLabel": "Authenticator Code",
+    "backupLabel": "Backup Code",
+    "backupPlaceholder": "Enter backup code",
+    "verify": "Verify",
+    "useBackupCode": "Use a backup code",
+    "useTotp": "Use authenticator app",
+    "invalidCode": "Invalid verification code"
+  },
   "home": {
-    "welcome": "Welcome home!",
+    "welcome": "Welcome to CineTrack!",
     "loggedInMessage": "You are successfully logged in."
   }
 }

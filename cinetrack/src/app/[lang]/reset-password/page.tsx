@@ -49,23 +49,23 @@ export default function ResetPasswordPage() {
                             inputMode="email"
                             autoComplete="email"
                             validate={(value) => {
-                                if (!value) return dictionary.resetPassword.emailRequired;
+                                if (!value) return dictionary.auth.emailRequired;
                                 if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value))
-                                    return dictionary.resetPassword.emailInvalid;
+                                    return dictionary.auth.emailInvalid;
                                 return null;
                             }}
                         >
-                            <Label>{dictionary.resetPassword.email}</Label>
+                            <Label>{dictionary.auth.email}</Label>
                             <InputGroup>
                                 <InputGroup.Prefix>
                                     <EnvelopeIcon className="size-4 text-foreground" />
                                 </InputGroup.Prefix>
-                                <InputGroup.Input placeholder={dictionary.resetPassword.emailPlaceholder} value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <InputGroup.Input placeholder={dictionary.auth.emailPlaceholder} value={email} onChange={(e) => setEmail(e.target.value)} />
                             </InputGroup>
                             <FieldError />
                         </TextField>
                         <Button isDisabled={loading || !email} type="submit" variant="primary" isPending={loading} fullWidth>
-                            {dictionary.resetPassword.submit}
+                            {dictionary.auth.submit}
                         </Button>
                     </Form>
                 </Card.Content>

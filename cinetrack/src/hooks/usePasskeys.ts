@@ -1,41 +1,44 @@
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {authClient} from "@/lib/auth-client";
 
-type Passkey = typeof authClient extends {
+export type Passkey = (typeof authClient extends {
     passkey: { listUserPasskeys(): Promise<{ data: (infer T)[] | null }> }
-} ? T : never;
+} ? T : never) & { aaguid?: string };
 
 export function usePasskeys() {
     const [passkeys, setPasskeys] = useState<Passkey[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const load = async () => {
+    const load = useCallback(async () => {
+        setIsLoading(true);
         const {data} = await authClient.passkey.listUserPasskeys();
         if (data) setPasskeys(data);
-    };
+        setIsLoading(false);
+    }, []);
 
-    const add = async (name?: string) => {
-        const {error} = await authClient.passkey.addPasskey({name});
+    const add = useCallback(async (name?: string) => {
+        const {data, error} = await authClient.passkey.addPasskey({name});
         if (!error) await load();
-        return error;
-    };
+        return {data, error};
+    }, [load]);
 
-    const rename = async (id: string, name: string) => {
+    const rename = useCallback(async (id: string, name: string) => {
         const {error} = await authClient.passkey.updatePasskey({id, name});
         if (!error) await load();
         return error;
-    };
+    }, [load]);
 
-    const remove = async (id: string) => {
+    const remove = useCallback(async (id: string) => {
         const {error} = await authClient.passkey.deletePasskey({id});
         if (!error) await load();
         return error;
-    };
+    }, [load]);
 
     useEffect(() => {
         (async () => {
             await load();
         })();
-    }, []);
+    }, [load]);
 
-    return {passkeys, add, rename, remove};
+    return {passkeys, isLoading, add, rename, remove};
 }

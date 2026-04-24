@@ -1,7 +1,7 @@
 "use client";
 
-import {useEffect, useState} from "react";
-import {Button, Card, FieldError, Form, InputGroup, Label, Separator, TextField, toast,} from "@heroui/react";
+import React, {useState} from "react";
+import {Button, Card, FieldError, Form, InputGroup, Label, Separator, TextField, toast} from "@heroui/react";
 import {useDictionary} from "@/app/components/DictionaryContext";
 import {authClient} from "@/lib/auth-client";
 import {EnvelopeIcon, EyeIcon, EyeSlashIcon, LockClosedIcon} from "@heroicons/react/24/outline";
@@ -9,21 +9,17 @@ import {GoogleIcon, PasskeyIcon} from "@/app/components/icons";
 import {useLocaleRouter} from "@/hooks/useLocaleRouter";
 import {LocaleLink} from "@/app/components/LocaleLink";
 
-type SocialProvider = "passkey" | "Google" | "Github" | "Facebook";
+type SocialProvider = "google" | "github" | "facebook";
 
-const SOCIAL_PROVIDERS: { provider: SocialProvider; icon: React.ReactNode }[] = [{
-    provider: "passkey", icon: <PasskeyIcon/>
-}, {provider: "Google", icon: <GoogleIcon/>}, // { provider: "Github", icon: <GithubIcon /> },
-    // { provider: "Facebook", icon: <FacebookIcon /> },
-];
-
+const SOCIAL_PROVIDERS: { provider: SocialProvider; label: string; icon: React.ReactNode }[] = [{
+    provider: "google", label: "Google", icon: <GoogleIcon/>
+},];
 
 export default function LoginPage() {
     const dictionary = useDictionary();
     const router = useLocaleRouter();
 
     const [loading, setLoading] = useState(false);
-    const [socialLoading, setSocialLoading] = useState<SocialProvider | null>(null);
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState("");
@@ -32,84 +28,69 @@ export default function LoginPage() {
         e.preventDefault();
         setLoading(true);
 
-        const data = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
+        try {
+            const {error: authError} = await authClient.signIn.email({email, password});
 
-        const {error: authError} = await authClient.signIn.email({
-            email: data.email, password: data.password,
-        });
-
-        if (authError) {
-            if (process.env.NODE_ENV === "development") {
-                console.log("[LoginPage] auth error:", authError);
+            if (authError) {
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[LoginPage] auth error:", authError);
+                }
+                toast(dictionary.login.error, {
+                    variant: "danger", description: authError.message || dictionary.common.unknownError,
+                });
+                return;
             }
 
-            toast(dictionary.login.error, {
-                variant: "danger", description: authError.message || dictionary.common.unknownError,
-            });
-            setLoading(false);
-        } else {
-            setLoading(false);
-            router.push(`/`);
+            router.push("/");
             router.refresh();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const onPasskeySignIn = async () => {
+        setLoading(true);
+
+        try {
+            const {error: authError} = await authClient.signIn.passkey({
+                fetchOptions: {
+                    onSuccess: () => {
+                        router.push("/");
+                        router.refresh();
+                    }, onError: (ctx) => {
+                        toast(dictionary.login.error, {
+                            variant: "danger", description: ctx.error.message || dictionary.common.unknownError,
+                        });
+                    },
+                },
+            });
+
+            if (authError) return;
+        } finally {
+            setLoading(false);
         }
     };
 
     const onSocialSignIn = async (provider: SocialProvider) => {
-        setSocialLoading(provider);
+        setLoading(true);
 
-        if (provider === "passkey") {
-            const {error: authError} = await authClient.signIn.passkey({
-                fetchOptions: {
-                    onSuccess: () => {
-                        router.push(`/`);
-                        router.refresh();
-                    }, onError: (ctx) => {
-                        if (ctx.error.message.includes(" ceremony was sent an abort signal") || ctx.error.message.includes("timed out or was not allowed")) {
-                            setSocialLoading(null);
-                            return;
-                        }
-                        toast(dictionary.login.error, {
-                            variant: "danger", description: ctx.error.message || dictionary.common.unknownError,
-                        });
-                        setSocialLoading(null);
-                    },
-                },
+        try {
+            const {error: authError} = await authClient.signIn.social({
+                provider, callbackURL: "/",
             });
+
             if (authError) {
-                setSocialLoading(null);
-            }
-            return;
-        }
-
-        const {error: authError} = await authClient.signIn.social({
-            provider: provider.toLowerCase() as "google" | "github" | "facebook", callbackURL: `/`,
-        });
-
-        if (authError) {
-            if (process.env.NODE_ENV === "development") {
-                console.log(`[LoginPage] ${provider} auth error:`, authError);
-            }
-            toast(dictionary.login.error, {
-                variant: "danger", description: authError.message || dictionary.common.unknownError,
-            });
-        }
-        setSocialLoading(null);
-    };
-
-    useEffect(() => {
-        authClient.oneTap({
-            fetchOptions: {
-                onSuccess: async () => {
-                    await authClient.getSession();
-
-                    router.push("/");
-                    router.refresh();
-                }, onError: (ctx) => {
-                    console.error("[OneTap Error]", ctx.error);
+                if (process.env.NODE_ENV === "development") {
+                    console.log(`[LoginPage] ${provider} auth error:`, authError);
                 }
-            },
-        });
-    }, [router]);
+                toast(dictionary.login.error, {
+                    variant: "danger", description: authError.message || dictionary.common.unknownError,
+                });
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (<main className="min-h-svh w-full flex flex-col items-center justify-center bg-background">
         <Card className="my-auto w-96" variant="transparent">
@@ -132,18 +113,18 @@ export default function LoginPage() {
                         autoComplete="email webauthn"
                         onChange={setEmail}
                         validate={(value) => {
-                            if (!value) return dictionary.login.emailRequired;
-                            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) return dictionary.login.emailInvalid;
+                            if (!value) return dictionary.auth.emailRequired;
+                            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) return dictionary.auth.emailInvalid;
                             return null;
                         }}
                     >
-                        <Label>{dictionary.login.email}</Label>
+                        <Label>{dictionary.auth.email}</Label>
                         <InputGroup>
                             <InputGroup.Prefix>
                                 <EnvelopeIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
                             <InputGroup.Input
-                                placeholder={dictionary.login.emailPlaceholder}
+                                placeholder={dictionary.auth.emailPlaceholder}
                                 value={email}
                             />
                         </InputGroup>
@@ -158,25 +139,25 @@ export default function LoginPage() {
                         onChange={setPassword}
                         autoComplete="current-password webauthn"
                         validate={(value) => {
-                            if (!value) return dictionary.login.passwordRequired;
-                            if (value.length < 8) return dictionary.login.passwordTooShort;
+                            if (!value) return dictionary.auth.passwordRequired;
+                            if (value.length < 8) return dictionary.auth.passwordTooShort;
                             return null;
                         }}
                     >
-                        <Label>{dictionary.login.password}</Label>
+                        <Label>{dictionary.auth.password}</Label>
                         <InputGroup>
                             <InputGroup.Prefix>
                                 <LockClosedIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
                             <InputGroup.Input
-                                placeholder={dictionary.login.passwordPlaceholder}
+                                placeholder={dictionary.auth.passwordPlaceholder}
                                 value={password}
                             />
                             {password && (<InputGroup.Suffix>
                                 <Button
                                     type="button"
                                     variant="ghost"
-                                    aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                                    aria-label={showPassword ? dictionary.auth.hidePassword : dictionary.auth.showPassword}
                                     onPress={() => setShowPassword((prev) => !prev)}
                                 >
                                     {showPassword ? <EyeIcon className="size-4 text-foreground"/> :
@@ -194,7 +175,7 @@ export default function LoginPage() {
                         isDisabled={loading || !password || !email}
                         fullWidth
                     >
-                        {dictionary.login.signIn}
+                        {dictionary.auth.signIn}
                     </Button>
                 </Form>
             </Card.Content>
@@ -206,35 +187,45 @@ export default function LoginPage() {
                     <Separator className="flex-1"/>
                 </div>
                 <div className="flex flex-col gap-4 w-full">
-                    {SOCIAL_PROVIDERS.map(({provider, icon}) => (<ContinueWithButton
+                    <ContinueWithButton
+                        label="Passkey"
+                        icon={<PasskeyIcon/>}
+                        isPending={loading}
+                        isDisabled={loading}
+                        onPress={onPasskeySignIn}
+                    />
+                    {SOCIAL_PROVIDERS.map(({provider, label, icon}) => (<ContinueWithButton
                         key={provider}
-                        provider={provider}
+                        label={label}
                         icon={icon}
-                        isPending={socialLoading === provider}
-                        isDisabled={socialLoading !== null}
+                        isPending={loading}
+                        isDisabled={loading}
                         onPress={() => onSocialSignIn(provider)}
                     />))}
                 </div>
             </Card.Footer>
         </Card>
 
-        <LocaleLink href={`/register`} aria-label={`${dictionary.login.noAccount} ${dictionary.login.signUp}`} className="no-underline space-x-1 m-4">
+        <LocaleLink
+            href="/register"
+            aria-label={`${dictionary.login.noAccount} ${dictionary.auth.signUp}`}
+            className="no-underline space-x-1 m-4"
+        >
             <span className="text-muted">{dictionary.login.noAccount}</span>
-            <span className="underline font-bold">{dictionary.login.signUp}</span>
+            <span className="underline font-bold">{dictionary.auth.signUp}</span>
         </LocaleLink>
     </main>);
 }
 
-
 interface ContinueWithButtonProps {
-    provider: SocialProvider;
+    label: string;
     icon: React.ReactNode;
     isPending: boolean;
     isDisabled: boolean;
     onPress: () => void;
 }
 
-const ContinueWithButton = ({provider, icon, isPending, isDisabled, onPress}: ContinueWithButtonProps) => {
+const ContinueWithButton = ({label, icon, isPending, isDisabled, onPress}: ContinueWithButtonProps) => {
     const dictionary = useDictionary();
 
     return (<Button
@@ -244,9 +235,9 @@ const ContinueWithButton = ({provider, icon, isPending, isDisabled, onPress}: Co
         isPending={isPending}
         isDisabled={isDisabled}
         onPress={onPress}
-        aria-label={`${dictionary.login.continueWith} ${provider}`}
+        aria-label={`${dictionary.login.continueWith} ${label}`}
     >
         {icon}
-        <span>{dictionary.login.continueWith} {provider}</span>
+        <span>{dictionary.login.continueWith} {label}</span>
     </Button>);
 };

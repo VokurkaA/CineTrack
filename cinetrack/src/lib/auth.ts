@@ -62,7 +62,7 @@ export const auth = betterAuth({
         storeInDatabase: true,
     }), twoFactor({
         allowPasswordless: true, issuer: "App name", otpOptions: {
-            async sendOTP({user, otp}, ctx) {
+            async sendOTP({user, otp}) {
                 console.log(`[2FA OTP] 2FA verification request for ${user.email}`,);
                 console.log(`[2FA OTP] Code: ${otp}`);
             },

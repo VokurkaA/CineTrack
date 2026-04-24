@@ -8,9 +8,8 @@ export function SessionGuard() {
     const router = useLocaleRouter();
 
     useEffect(() => {
-        // console.error(session,isPending)
         if (!isPending && !session) {
-            router.replace("/login");
+                router.replace("/login");
         }
     }, [session, isPending, router]);
 

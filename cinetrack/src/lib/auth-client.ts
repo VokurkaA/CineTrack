@@ -20,8 +20,10 @@ export const authClient = createAuthClient({
             },
         }
     }), adminClient(), i18nClient(), passkeyClient(), lastLoginMethodClient(), multiSessionClient(), twoFactorClient({
-        onTwoFactorRedirect({twoFactorMethods}) {
-            window.location.href = "/2fa";
+        onTwoFactorRedirect() {
+            const pathSegments = window.location.pathname.split('/');
+            const lang = ['en', 'cs'].includes(pathSegments[1]) ? pathSegments[1] : 'en';
+            window.location.href = `/${lang}/2fa`;
         }
     }), oneTapClient({
         clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!, promptOptions: {

@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 
 const locales = ["en", "cs"];
 const defaultLocale = "en";
-const publicRoutes = ["login", "register", "reset-password", "set-password"];
+const publicRoutes = ["login", "register", "reset-password", "set-password", "2fa", "auth-callback"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

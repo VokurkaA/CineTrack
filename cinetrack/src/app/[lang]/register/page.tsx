@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef, useState} from "react";
+import {useState} from "react";
 import {Button, Card, Description, FieldError, Form, InputGroup, Label, TextField, toast,} from "@heroui/react";
 import {useDictionary} from "@/app/components/DictionaryContext";
 import {authClient} from "@/lib/auth-client";
@@ -11,7 +11,6 @@ import {LocaleLink} from "@/app/components/LocaleLink";
 export default function RegisterPage() {
     const dictionary = useDictionary();
     const router = useLocaleRouter();
-    const oneTapInitialized = useRef(false);
     
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
@@ -43,24 +42,20 @@ export default function RegisterPage() {
         }
     };
 
-    useEffect(() => {
-        if (oneTapInitialized.current) return;
-        oneTapInitialized.current = true;
+    // useEffect(() => {
+    //     authClient.oneTap({
+    //         fetchOptions: {
+    //             onSuccess: async () => {
+    //                 await authClient.getSession();
 
-        authClient.oneTap({
-            fetchOptions: {
-                onSuccess: async () => {
-                    await authClient.getSession();
-
-                    router.push("/");
-                    router.refresh();
-                }, onError: (ctx) => {
-                    console.error("[OneTap Error]", ctx.error);
-                    oneTapInitialized.current = false;
-                }
-            },
-        });
-    }, [router]);
+    //                 router.push("/");
+    //                 router.refresh();
+    //             }, onError: (ctx) => {
+    //                 console.error("[OneTap Error]", ctx.error);
+    //             }
+    //         },
+    //     });
+    // }, [router]);
 
     return (<main className="min-h-svh w-full flex flex-col items-center justify-center bg-background">
         <Card className="my-auto w-96" variant="transparent">
@@ -81,16 +76,16 @@ export default function RegisterPage() {
                         type="text"
                         autoComplete="name"
                         validate={(value) => {
-                            if (!value) return dictionary.register.nameRequired;
+                            if (!value) return dictionary.auth.nameRequired;
                             return null;
                         }}
                     >
-                        <Label>{dictionary.register.name}</Label>
+                        <Label>{dictionary.auth.name}</Label>
                         <InputGroup>
                             <InputGroup.Prefix>
                                 <UserIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder={dictionary.register.namePlaceholder}/>
+                            <InputGroup.Input placeholder={dictionary.auth.namePlaceholder}/>
                         </InputGroup>
                         <FieldError/>
                     </TextField>
@@ -102,17 +97,17 @@ export default function RegisterPage() {
                         inputMode="email"
                         autoComplete="email"
                         validate={(value) => {
-                            if (!value) return dictionary.login.emailRequired;
-                            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) return dictionary.login.emailInvalid;
+                            if (!value) return dictionary.auth.emailRequired;
+                            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) return dictionary.auth.emailInvalid;
                             return null;
                         }}
                     >
-                        <Label>{dictionary.login.email}</Label>
+                        <Label>{dictionary.auth.email}</Label>
                         <InputGroup>
                             <InputGroup.Prefix>
                                 <EnvelopeIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder={dictionary.login.emailPlaceholder}/>
+                            <InputGroup.Input placeholder={dictionary.auth.emailPlaceholder}/>
                         </InputGroup>
                         <FieldError/>
                     </TextField>
@@ -125,21 +120,21 @@ export default function RegisterPage() {
                         onChange={setPassword}
                         autoComplete="new-password"
                         validate={(value) => {
-                            if (!value) return dictionary.login.passwordRequired;
-                            if (value.length < 8) return dictionary.login.passwordTooShort;
+                            if (!value) return dictionary.auth.passwordRequired;
+                            if (value.length < 8) return dictionary.auth.passwordTooShort;
                             return null;
                         }}
                     >
-                        <Label>{dictionary.login.password}</Label>
+                        <Label>{dictionary.auth.password}</Label>
                         <InputGroup>
                             <InputGroup.Prefix>
                                 <LockClosedIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder={dictionary.login.passwordPlaceholder}/>
+                            <InputGroup.Input placeholder={dictionary.auth.passwordPlaceholder}/>
                             {password && <InputGroup.Suffix>
                                 <Button
                                     variant="ghost"
-                                    aria-label={showPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                                    aria-label={showPassword ? dictionary.auth.hidePassword : dictionary.auth.showPassword}
                                     onPress={() => setShowPassword((prev) => !prev)}
                                 >
                                     {showPassword ? <EyeIcon className="size-4 text-foreground"/> :
@@ -147,7 +142,7 @@ export default function RegisterPage() {
                                 </Button>
                             </InputGroup.Suffix>}
                         </InputGroup>
-                        <Description>{dictionary.login.passwordDescription}</Description>
+                        <Description>{dictionary.auth.passwordDescription}</Description>
                         <FieldError/>
                     </TextField>
 
@@ -159,21 +154,21 @@ export default function RegisterPage() {
                         onChange={setConfirmPassword}
                         autoComplete="new-password"
                         validate={(value) => {
-                            if (!value) return dictionary.register.confirmPasswordRequired;
-                            if (value !== password) return dictionary.register.passwordsDoNotMatch;
+                            if (!value) return dictionary.auth.confirmPasswordRequired;
+                            if (value !== password) return dictionary.auth.passwordsDoNotMatch;
                             return null;
                         }}
                     >
-                        <Label>{dictionary.register.confirmPassword}</Label>
+                        <Label>{dictionary.auth.confirmPassword}</Label>
                         <InputGroup>
                             <InputGroup.Prefix>
                                 <LockClosedIcon className="size-4 text-foreground"/>
                             </InputGroup.Prefix>
-                            <InputGroup.Input placeholder={dictionary.register.confirmPasswordPlaceholder}/>
+                            <InputGroup.Input placeholder={dictionary.auth.confirmPasswordPlaceholder}/>
                             {confirmPassword && (<InputGroup.Suffix>
                                 <Button
                                     variant="ghost"
-                                    aria-label={showConfirmPassword ? dictionary.login.hidePassword : dictionary.login.showPassword}
+                                    aria-label={showConfirmPassword ? dictionary.auth.hidePassword : dictionary.auth.showPassword}
                                     onPress={() => setShowConfirmPassword((prev) => !prev)}
                                 >
                                     {showConfirmPassword ? <EyeIcon className="size-4 text-foreground"/> :
@@ -185,15 +180,15 @@ export default function RegisterPage() {
                     </TextField>
 
                     <Button type="submit" variant="primary" isPending={loading} fullWidth>
-                        {dictionary.register.signUp}
+                        {dictionary.auth.signUp}
                     </Button>
                 </Form>
             </Card.Content>
         </Card>
 
-        <LocaleLink href={`/login`} aria-label={`${dictionary.register.hasAccount} ${dictionary.register.signIn}`} className="no-underline space-x-1 m-4">
+        <LocaleLink href={`/login`} aria-label={`${dictionary.register.hasAccount} ${dictionary.auth.signIn}`} className="no-underline space-x-1 m-4">
             <span>{dictionary.register.hasAccount}</span>
-            <span className="underline font-bold">{dictionary.register.signIn}</span>
+            <span className="underline font-bold">{dictionary.auth.signIn}</span>
         </LocaleLink>
     </main>);
 }

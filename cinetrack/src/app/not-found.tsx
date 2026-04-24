@@ -1,6 +1,7 @@
 import { getDictionary, Locale } from '@/lib/get-dictionary';
 import { headers } from 'next/headers';
 import { LocaleLink } from '@/app/components/LocaleLink';
+import { LinkIcon } from '@heroui/react';
 import { Suspense } from 'react';
 
 async function NotFoundContent() {
@@ -18,16 +19,14 @@ async function NotFoundContent() {
       </p>
       <LocaleLink href="/">
         {dictionary.notFound.goHome}
-        <LocaleLink.Icon />
+        <LinkIcon />
       </LocaleLink>
     </div>
   );
 }
 
 export default function RootNotFound() {
-  return (
-    <Suspense>
-      <NotFoundContent />
-    </Suspense>
-  );
+    return (<Suspense>
+        <NotFoundContent/>
+    </Suspense>);
 }
